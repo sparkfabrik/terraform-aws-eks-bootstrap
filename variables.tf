@@ -3,15 +3,6 @@ variable "aws_default_region" {
   type        = string
 }
 
-# variable "application_projects" {
-#   description = "Cluster application projects"
-#   type        = object({
-#     application = string
-#     ecr = list(string)
-#     namespace = list(string)
-#   })
-# }
-
 ################################################################################
 # VPC Variables
 ################################################################################
@@ -114,3 +105,14 @@ variable "node_termination_handler_helm_release_name" {
   type        = string
   default     = "aws-node-termination-handler"
 }
+
+variable "application_projects" {
+  description = "Application Projects"
+  type        = object({
+    name = string
+    repository_max_image = optional(number, 90)
+    namespace = list(string)
+
+  })
+}
+
