@@ -1,31 +1,20 @@
-variable "project_name" {
-  description = "Project name"
-  type        = string
-  default     = "to-italy-group"
-}
-
 variable "aws_default_region" {
   description = "AWS Default Region"
   type        = string
-  default     = "eu-west-1"
 }
+
+# variable "application_projects" {
+#   description = "Cluster application projects"
+#   type        = object({
+#     application = string
+#     ecr = list(string)
+#     namespace = list(string)
+#   })
+# }
 
 ################################################################################
 # VPC Variables
 ################################################################################
-
-variable "vpc_enable_nat_gateway" {
-  description = "Enable NAT Gateway"
-  type        = bool
-  default     = true
-}
-
-variable "vpc_enable_single_nat_gateway" {
-  description = "Enable single NAT Gateway"
-  type        = bool
-  default     = true
-}
-
 variable "vpc" {
   type = object({
     cidr_block                = string
@@ -33,6 +22,8 @@ variable "vpc" {
     public_subnet_cidr_block  = list(string)
     private_subnet_cidr_block = list(string)
     service_subnet_cidr_block = list(string)
+    enable_nat_gateway        = bool
+    enable_single_nat_gateway = bool
   })
 }
 

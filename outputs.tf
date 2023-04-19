@@ -130,3 +130,15 @@ output "eks_managed_node_groups_autoscaling_group_names" {
   description = "List of the autoscaling group names created by EKS managed node groups"
   value       = module.eks.eks_managed_node_groups_autoscaling_group_names
 }
+
+################################################################################
+# VPC
+################################################################################
+
+output "vpc_id" {
+  value = module.vpc.vpc_id
+}
+
+output "public_subnets" {
+  value = module.vpc.public_subnets
+}
