@@ -142,3 +142,11 @@ output "vpc_id" {
 output "public_subnets" {
   value = module.vpc.public_subnets
 }
+
+################################################################################
+# ECR
+################################################################################
+output "application_repository_url" {
+  description = "The ARN of the ECR repository"
+  value       = aws_ecr_repository.repositories.repository_url
+}
