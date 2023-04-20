@@ -2,19 +2,9 @@ variable "aws_default_region" {
   type = string
 }
 
-################################################################################
-# VPC Variables
-################################################################################
-variable "vpc" {
-  type = object({
-    cidr_block                = string
-    azs                       = list(string)
-    public_subnet_cidr_block  = list(string)
-    private_subnet_cidr_block = list(string)
-    service_subnet_cidr_block = list(string)
-    enable_nat_gateway        = bool
-    enable_single_nat_gateway = bool
-  })
+variable "project" {
+  type        = string
+  description = "Project name"
 }
 
 ################################################################################
@@ -23,10 +13,40 @@ variable "vpc" {
 
 variable "cluster" {
   type = object({
-    name    = string
-    version = optional(string, "1.24")
-    # Possible values: "api", "audit", "authenticator", "controllerManager", "scheduler"
-    enabled_log_types = optional(list(string), [])
+    name                                   = string
+    version                                = optional(string, "1.24")
+    enable_endpoint_public_access          = optional(bool, true)
+    enable_endpoint_private_access         = optional(bool, true)
+    cloudwatch_log_group_retention_in_days = optional(number, 14)
+    enabled_log_types                      = optional(list(string), []) # Possible values: "api", "audit", "authenticator", "controllerManager", "scheduler"
+    eks_managed_node_group_defaults = optional(object({
+      instance_types = optional(list(string), ["t3.medium"])
+      disk_size      = optional(number, 50)
+      }), {
+      instance_types = ["t3.medium"]
+      disk_size      = 50
+    })
+    eks_managed_node_groups = optional(map(object({
+      min_size       = optional(number, 1)
+      max_size       = optional(number, 2)
+      desired_size   = optional(number, 1)
+      instance_types = optional(list(string), ["t3.small"])
+      capacity_type  = optional(string, "SPOT")
+      labels = optional(map(string), {
+        role = "default"
+      })
+      })), {
+      default = {
+        min_size       = 1
+        max_size       = 2
+        desired_size   = 1
+        instance_types = ["t3.small"]
+        capacity_type  = "SPOT"
+        labels = {
+          role = "default"
+        }
+      }
+    })
     # Cluster Autoscaler https://artifacthub.io/packages/helm/cluster-autoscaler/cluster-autoscaler
     autoscaler = optional(object({
       chart_version     = optional(string, "9.28.0")
@@ -38,7 +58,7 @@ variable "cluster" {
       helm_release_name = "cluster-autoscaler"
     })
     # ALB Ingress Controller https://artifacthub.io/packages/helm/aws/aws-load-balancer-controller
-    autoscaler = optional(object({
+    alb_controller = optional(object({
       chart_version     = optional(string, "1.5.1")
       namespace         = optional(string, "kube-system")
       helm_release_name = optional(string, "aws-load-balancer-controller")
@@ -57,49 +77,25 @@ variable "cluster" {
       namespace         = "kube-system"
       helm_release_name = "aws-node-termination-handler"
     })
+    cluster_access = optional(object({
+      enable               = optional(bool, true)
+      developer_group_name = optional(string, "developer-access")
+      admin_group_name     = optional(string, "admin-access")
+      environment          = optional(string, "prod")
+      namespaces           = optional(list(string), ["default"])
+      }), {
+      enable               = true
+      developer_group_name = "developer-access"
+      admin_group_name     = "admin-access"
+      environment          = "prod"
+    })
   })
 }
 
-variable "application_project" {
-  type = map(object({
-    repository_max_image = optional(number, 90)
-    namespaces           = list(string)
-    database = optional(object({
-      engine                       = string
-      engine_version               = string
-      instance_class               = string
-      storage_type                 = optional(string, "gp3")
-      allocated_storage            = number
-      max_allocated_storage        = number
-      storage_encrypted            = optional(bool, true)
-      multi_az                     = bool
-      auto_minor_version_upgrade   = optional(string, true)
-      db_name                      = optional(string, "")
-      username                     = optional(string, "admin")
-      password                     = optional(string, null)
-      port                         = string
-      snapshot_id                  = optional(string, null)
-      maintenance_window           = optional(string, "sun:02:00-sun:05:00")
-      apply_immediately            = optional(bool, true)
-      backup_window                = optional(string, "00:00-01:00")
-      backup_retention_period      = optional(string, "0")
-      logs_exports                 = optional(list(string), ["error", "general", "slowquery"])
-      publicly_accessible          = optional(bool, false)
-      deletion_protection          = optional(bool, true)
-      copy_tags_to_snapshot        = optional(bool, true)
-      skip_final_snapshot          = optional(bool, true)
-      performance_insights_enabled = optional(bool, false)
-      # security_groups            = optional(list(string), [])
-    }))
-    cache = optional(object({
-      engine = string
-      engine_version = string
-      node_type = string
-      replicas = optional(number, 1)
-      port = string
-      security_group_ids = optional(list(string), [])
-      num_cache_nodes = optional(number, 1)
-      az_mode = optional(string, "single-az")
-    }))
-  }))
+variable "vpc_id" {
+  type = string
+}
+
+variable "subnet_ids" {
+  type = list(string)
 }
