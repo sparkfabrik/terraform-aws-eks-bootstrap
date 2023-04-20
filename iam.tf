@@ -64,22 +64,22 @@
 
 # }
 
-module "cluster_autoscaler_irsa_role" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "~> 5.17"
+# module "cluster_autoscaler_irsa_role" {
+#   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+#   version = "~> 5.17"
 
-  role_name                        = "cluster-autoscaler"
-  attach_cluster_autoscaler_policy = true
-  cluster_autoscaler_cluster_ids   = [module.eks.cluster_name]
+#   role_name                        = "cluster-autoscaler"
+#   attach_cluster_autoscaler_policy = true
+#   cluster_autoscaler_cluster_ids   = [module.eks.cluster_name]
 
-  oidc_providers = {
-    ex = {
-      provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["${var.cluster_autoscaler_namespace}:${var.cluster_autoscaler_helm_release_name}}"]
-    }
-  }
+#   oidc_providers = {
+#     ex = {
+#       provider_arn               = module.eks.oidc_provider_arn
+#       namespace_service_accounts = ["${var.cluster_autoscaler_namespace}:${var.cluster_autoscaler_helm_release_name}}"]
+#     }
+#   }
 
-}
+# }
 
 # module "ebs_csi_irsa_role" {
 #   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
@@ -97,35 +97,35 @@ module "cluster_autoscaler_irsa_role" {
 
 # }
 
-module "load_balancer_controller_irsa_role" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "~> 5.17"
+# module "load_balancer_controller_irsa_role" {
+#   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+#   version = "~> 5.17"
 
-  role_name                              = "load-balancer-controller"
-  attach_load_balancer_controller_policy = true
+#   role_name                              = "load-balancer-controller"
+#   attach_load_balancer_controller_policy = true
 
-  oidc_providers = {
-    ex = {
-      provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["${var.alb_ingress_controller_namespace}:${var.alb_ingress_controller_helm_release_name}"]
-    }
-  }
-}
+#   oidc_providers = {
+#     ex = {
+#       provider_arn               = module.eks.oidc_provider_arn
+#       namespace_service_accounts = ["${var.alb_ingress_controller_namespace}:${var.alb_ingress_controller_helm_release_name}"]
+#     }
+#   }
+# }
 
-module "node_termination_handler_irsa_role" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "~> 5.17"
+# module "node_termination_handler_irsa_role" {
+#   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+#   version = "~> 5.17"
 
-  role_name                              = "node-termination-handler"
-  attach_node_termination_handler_policy = true
+#   role_name                              = "node-termination-handler"
+#   attach_node_termination_handler_policy = true
 
-  oidc_providers = {
-    ex = {
-      provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["${var.node_termination_handler_namespace}:${var.node_termination_handler_helm_release_name}"]
-    }
-  }
-}
+#   oidc_providers = {
+#     ex = {
+#       provider_arn               = module.eks.oidc_provider_arn
+#       namespace_service_accounts = ["${var.node_termination_handler_namespace}:${var.node_termination_handler_helm_release_name}"]
+#     }
+#   }
+# }
 
 # module "velero_irsa_role" {
 #   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
