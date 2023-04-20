@@ -1,12 +1,8 @@
-################################################################################
-# VPC Module
-################################################################################
-
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "~> 4.0"
 
-  name                   = "${var.eks_cluster_name}-vpc"
+  name                   = "${var.cluster_name}-vpc"
   cidr                   = var.vpc.cidr_block
   azs                    = var.vpc.azs
   private_subnets        = var.vpc.private_subnet_cidr_block
@@ -17,20 +13,20 @@ module "vpc" {
   enable_dns_hostnames   = true
 
   tags = {
-    "kubernetes.io/cluster/${var.eks_cluster_name}" = "shared"
-    Cluster                                     = var.eks_cluster_name
+    "kubernetes.io/cluster/${var.cluster_name}" = "shared"
+    Cluster                                     = var.cluster_name
   }
 
   public_subnet_tags = {
-    "kubernetes.io/cluster/${var.eks_cluster_name}" = "shared"
+    "kubernetes.io/cluster/${var.cluster_name}" = "shared"
     "kubernetes.io/role/elb"                    = "1"
-    Cluster                                     = var.eks_cluster_name
+    Cluster                                     = var.cluster_name
   }
 
   private_subnet_tags = {
-    "kubernetes.io/cluster/${var.eks_cluster_name}" = "shared"
+    "kubernetes.io/cluster/${var.cluster_name}" = "shared"
     "kubernetes.io/role/internal-elb"           = "1"
-    Cluster                                     = var.eks_cluster_name
+    Cluster                                     = var.cluster_name
   }
 }
 
@@ -42,7 +38,7 @@ resource "aws_subnet" "service_subnet" {
   availability_zone = each.key
 
   tags = {
-    Name    = "${var.eks_cluster_name}-vpc-service-${each.key}"
-    Cluster = var.eks_cluster_name
+    Name    = "${var.cluster_name}-vpc-service-${each.key}"
+    Cluster = var.cluster_name
   }
 }

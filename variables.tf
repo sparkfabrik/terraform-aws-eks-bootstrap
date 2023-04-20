@@ -1,6 +1,5 @@
 variable "aws_default_region" {
-  description = "AWS Default Region"
-  type        = string
+  type = string
 }
 
 ################################################################################
@@ -22,97 +21,84 @@ variable "vpc" {
 # EKS Variables
 ################################################################################
 
-variable "eks_cluster_name" {
-  description = "EKS Cluster Name"
-  type        = string
-}
-
-variable "eks_cluster_version" {
-  description = "EKS Cluster Version"
-  type        = string
-  default     = "1.24"
-}
-
-variable "cluster_enabled_log_types" {
-  description = "EKS Cluster Enabled Log Types"
-  type        = list(string)
-  # Possible values: "api", "audit", "authenticator", "controllerManager", "scheduler"
-  default = []
-}
-
-################################################################################
-# Helm Chart Variables
-################################################################################
-
-# Cluster Autoscaler
-# https://artifacthub.io/packages/helm/cluster-autoscaler/cluster-autoscaler
-variable "cluster_autoscaler_chart_version" {
-  description = "Cluster Autoscaler Chart Version"
-  type        = string
-  default     = "9.28.0"
-}
-
-variable "cluster_autoscaler_namespace" {
-  description = "Cluster Autoscaler Namespace"
-  type        = string
-  default     = "kube-system"
-}
-
-variable "cluster_autoscaler_helm_release_name" {
-  description = "Cluster Autoscaler Helm Release Name"
-  type        = string
-  default     = "cluster-autoscaler"
-}
-
-# ALB Ingress Controller
-# https://artifacthub.io/packages/helm/aws/aws-load-balancer-controller
-
-variable "alb_ingress_controller_chart_version" {
-  description = "ALB Ingress Controller Chart Version"
-  type        = string
-  default     = "1.5.1"
-}
-
-variable "alb_ingress_controller_namespace" {
-  description = "ALB Ingress Controller Namespace"
-  type        = string
-  default     = "kube-system"
-}
-
-variable "alb_ingress_controller_helm_release_name" {
-  description = "ALB Ingress Controller Helm Release Name"
-  type        = string
-  default     = "aws-load-balancer-controller"
-}
-
-# Node Termination Handler
-# https://artifacthub.io/packages/helm/aws/aws-node-termination-handler
-
-variable "node_termination_handler_chart_version" {
-  description = "Node Termination Handler Chart Version"
-  type        = string
-  default     = "0.21.0"
-}
-
-variable "node_termination_handler_namespace" {
-  description = "Node Termination Handler Namespace"
-  type        = string
-  default     = "kube-system"
-}
-
-variable "node_termination_handler_helm_release_name" {
-  description = "Node Termination Handler Helm Release Name"
-  type        = string
-  default     = "aws-node-termination-handler"
-}
-
-variable "application_projects" {
-  description = "Application Projects"
-  type        = object({
-    name = string
-    repository_max_image = optional(number, 90)
-    namespace = list(string)
-
+variable "cluster" {
+  type = object({
+    name    = string
+    version = optional(string, "1.24")
+    # Possible values: "api", "audit", "authenticator", "controllerManager", "scheduler"
+    enabled_log_types = optional(list(string), [])
+    # Cluster Autoscaler https://artifacthub.io/packages/helm/cluster-autoscaler/cluster-autoscaler
+    autoscaler = optional(object({
+      chart_version     = optional(string, "9.28.0")
+      namespace         = optional(string, "kube-system")
+      helm_release_name = optional(string, "cluster-autoscaler")
+      }), {
+      chart_version     = "9.28.0"
+      namespace         = "kube-system"
+      helm_release_name = "cluster-autoscaler"
+    })
+    # ALB Ingress Controller https://artifacthub.io/packages/helm/aws/aws-load-balancer-controller
+    autoscaler = optional(object({
+      chart_version     = optional(string, "1.5.1")
+      namespace         = optional(string, "kube-system")
+      helm_release_name = optional(string, "aws-load-balancer-controller")
+      }), {
+      chart_version     = "1.5.1"
+      namespace         = "kube-system"
+      helm_release_name = "aws-load-balancer-controller"
+    })
+    # Node Termination Handler https://artifacthub.io/packages/helm/aws/aws-node-termination-handler
+    node_termination_handler = optional(object({
+      chart_version     = optional(string, "0.21.0")
+      namespace         = optional(string, "kube-system")
+      helm_release_name = optional(string, "aws-node-termination-handler")
+      }), {
+      chart_version     = "0.21.0"
+      namespace         = "kube-system"
+      helm_release_name = "aws-node-termination-handler"
+    })
   })
 }
 
+variable "application_project" {
+  type = map(object({
+    repository_max_image = optional(number, 90)
+    namespaces           = list(string)
+    database = optional(object({
+      engine                       = string
+      engine_version               = string
+      instance_class               = string
+      storage_type                 = optional(string, "gp3")
+      allocated_storage            = number
+      max_allocated_storage        = number
+      storage_encrypted            = optional(bool, true)
+      multi_az                     = bool
+      auto_minor_version_upgrade   = optional(string, true)
+      db_name                      = optional(string, "")
+      username                     = optional(string, "admin")
+      password                     = optional(string, null)
+      port                         = string
+      snapshot_id                  = optional(string, null)
+      maintenance_window           = optional(string, "sun:02:00-sun:05:00")
+      apply_immediately            = optional(bool, true)
+      backup_window                = optional(string, "00:00-01:00")
+      backup_retention_period      = optional(string, "0")
+      logs_exports                 = optional(list(string), ["error", "general", "slowquery"])
+      publicly_accessible          = optional(bool, false)
+      deletion_protection          = optional(bool, true)
+      copy_tags_to_snapshot        = optional(bool, true)
+      skip_final_snapshot          = optional(bool, true)
+      performance_insights_enabled = optional(bool, false)
+      # security_groups            = optional(list(string), [])
+    }))
+  }))
+}
+
+# variable "application_projects" {
+#   description = "Application Project"
+#   type = object({
+#     name                 = string
+#     repository_max_image = optional(number, 90)
+#     namespace            = list(string)
+#   })
+# }
