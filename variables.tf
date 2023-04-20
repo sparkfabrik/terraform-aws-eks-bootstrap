@@ -91,14 +91,15 @@ variable "application_project" {
       performance_insights_enabled = optional(bool, false)
       # security_groups            = optional(list(string), [])
     }))
+    cache = optional(object({
+      engine = string
+      engine_version = string
+      node_type = string
+      replicas = optional(number, 1)
+      port = string
+      security_group_ids = optional(list(string), [])
+      num_cache_nodes = optional(number, 1)
+      az_mode = optional(string, "single-az")
+    }))
   }))
 }
-
-# variable "application_projects" {
-#   description = "Application Project"
-#   type = object({
-#     name                 = string
-#     repository_max_image = optional(number, 90)
-#     namespace            = list(string)
-#   })
-# }

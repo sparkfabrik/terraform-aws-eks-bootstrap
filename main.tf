@@ -67,6 +67,16 @@ module "rds" {
   application_project = var.application_project
 }
 
+## Cache
+module "cache" {
+  source = "./modules/cache"
+  cluster_name = var.cluster.name
+  vpc_id = module.vpc.vpc_id
+  vpc_cidr_block = var.vpc.cidr_block
+  subnet_ids = module.vpc.service_subnet_ids
+  application_project = var.application_project  
+}
+
 # module "eks" {
 #   source  = "terraform-aws-modules/eks/aws"
 #   version = "~> 19.13"
