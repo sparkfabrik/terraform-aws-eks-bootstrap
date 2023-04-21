@@ -4,7 +4,7 @@ locals {
 
 resource "helm_release" "aws_node_termination_handler" {
   name       = var.helm_release_name
-  repository = "https://kubernetes.github.io/autoscaler"
+  repository = "https://aws.github.io/eks-charts/"
   chart      = var.helm_release_name
   namespace  = var.namespace
   version    = var.chart_version

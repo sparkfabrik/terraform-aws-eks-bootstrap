@@ -23,9 +23,11 @@ variable "cluster" {
     eks_managed_node_group_defaults = optional(object({
       instance_types = optional(list(string), ["t3.medium"])
       disk_size      = optional(number, 50)
+      desired_size   = optional(number, 2)
       }), {
       instance_types = ["t3.medium"]
       disk_size      = 50
+      desired_size   = 2
     })
     eks_managed_node_groups = optional(map(object({
       min_size       = optional(number, 1)

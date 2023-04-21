@@ -98,7 +98,7 @@ module "cluster_autoscaler_irsa_role" {
   oidc_providers = {
     ex = {
       provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["${var.cluster.autoscaler.namespace}:${var.cluster.autoscaler.helm_release_name}"]
+      namespace_service_accounts = ["${var.cluster.autoscaler.namespace}:${var.cluster.autoscaler.helm_release_name}-aws-cluster-autoscaler"]
     }
   }
 }

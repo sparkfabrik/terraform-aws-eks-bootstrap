@@ -14,6 +14,9 @@ module "eks" {
     aws-ebs-csi-driver = {
       most_recent = true
     }
+    coredns = {
+      most_recent = true
+    }
   }
 
   cluster_enabled_log_types              = var.cluster.enabled_log_types
@@ -27,7 +30,7 @@ module "eks" {
 
   eks_managed_node_groups = {
     default = {
-      min_size     = 1
+      min_size     = 2
       max_size     = 3
       desired_size = 2
 
@@ -49,16 +52,19 @@ module "cluster_access" {
   admin_group_name     = var.cluster.cluster_access.admin_group_name
 }
 
-# module "cluster_autoscaler" {
-#   source = "./modules/helm-cluster-autoscaler"
+module "cluster_autoscaler" {
+  source = "./modules/helm-cluster-autoscaler"
 
-#   cluster_name      = var.cluster.name
-#   chart_version     = var.cluster.autoscaler.chart_version
-#   namespace         = var.cluster.autoscaler.namespace
-#   helm_release_name = var.cluster.autoscaler.helm_release_name
-#   cluster_region    = var.aws_default_region
-#   iam_role_arn      = module.cluster_autoscaler_irsa_role.iam_role_arn
-# }
+  cluster_name      = var.cluster.name
+  chart_version     = var.cluster.autoscaler.chart_version
+  namespace         = var.cluster.autoscaler.namespace
+  helm_release_name = var.cluster.autoscaler.helm_release_name
+  cluster_region    = var.aws_default_region
+  iam_role_arn      = module.cluster_autoscaler_irsa_role.iam_role_arn
+  depends_on = [
+    module.metrics_server
+  ]
+}
 
 module "helm_alb_controller" {
   source = "./modules/helm-alb-controller"
@@ -76,16 +82,19 @@ module "helm_alb_controller" {
   ]
 }
 
-# module "helm_node_termination-handler" {
-#   source = "./modules/helm-node-termination-handler"
+module "helm_node_termination-handler" {
+  source = "./modules/helm-node-termination-handler"
 
-#   cluster_name      = var.cluster.name
-#   chart_version     = var.cluster.node_termination_handler.chart_version
-#   namespace         = var.cluster.node_termination_handler.namespace
-#   helm_release_name = var.cluster.node_termination_handler.helm_release_name
-#   cluster_region    = var.aws_default_region
-#   iam_role_arn      = module.node_termination_handler_irsa_role.iam_role_arn
-# }
+  cluster_name      = var.cluster.name
+  chart_version     = var.cluster.node_termination_handler.chart_version
+  namespace         = var.cluster.node_termination_handler.namespace
+  helm_release_name = var.cluster.node_termination_handler.helm_release_name
+  cluster_region    = var.aws_default_region
+  iam_role_arn      = module.node_termination_handler_irsa_role.iam_role_arn
+  depends_on = [
+    module.metrics_server
+  ]
+}
 
 module "cert_manager" {
   source = "./modules/helm-certificate-manager"
@@ -101,10 +110,10 @@ module "cert_manager" {
   install_cluster_issuer      = var.cluster.cert_manager.install_cluster_issuer
 }
 
-# module "metrics_server" {
-#   source = "./modules/helm-metrics-server"
+module "metrics_server" {
+  source = "./modules/helm-metrics-server"
 
-#   chart_version     = var.cluster.metrics_server.chart_version
-#   namespace         = var.cluster.metrics_server.namespace
-#   helm_release_name = var.cluster.metrics_server.helm_release_name
-# }
+  chart_version     = var.cluster.metrics_server.chart_version
+  namespace         = var.cluster.metrics_server.namespace
+  helm_release_name = var.cluster.metrics_server.helm_release_name
+}
