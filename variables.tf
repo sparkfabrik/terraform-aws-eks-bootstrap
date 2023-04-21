@@ -14,12 +14,12 @@ variable "project" {
 
 variable "cluster" {
   type = object({
-    name                                   = string
-    version                                = optional(string, "1.24")
-    enable_endpoint_public_access          = optional(bool, true)
-    enable_endpoint_private_access         = optional(bool, true)
-    cloudwatch_log_group_retention_in_days = optional(number, 14)
-    enabled_log_types                      = optional(list(string), []) # Possible values: "api", "audit", "authenticator", "controllerManager", "scheduler"
+    name                           = string
+    version                        = optional(string, "1.24")
+    enable_endpoint_public_access  = optional(bool, true)
+    enable_endpoint_private_access = optional(bool, true)
+    log_group_retention_in_days    = optional(number, 14)
+    enabled_log_types              = optional(list(string), []) # Possible values: "api", "audit", "authenticator", "controllerManager", "scheduler"
     eks_managed_node_group_defaults = optional(object({
       instance_types = optional(list(string), ["t3.medium"])
       disk_size      = optional(number, 50)
@@ -123,6 +123,37 @@ variable "cluster" {
       chart_version     = "3.10.0"
       namespace         = "metrics-server"
       helm_release_name = "metrics-server"
+    })
+    ingress_nginx = optional(object({
+      chart_version     = optional(string, "4.6.0")
+      namespace         = optional(string, "ingress-nginx")
+      helm_release_name = optional(string, "ingress-nginx")
+      aws_tags          = optional(map(string), {})
+      nlb_name          = optional(string, "ingress-nginx-nlb")
+      }), {
+      chart_version     = "3.36.0"
+      namespace         = "ingress-nginx"
+      helm_release_name = "ingress-nginx"
+      aws_tags          = {}
+    })
+    fluentbit = optional(object({
+      fluent_bit_image_tag              = optional(string, "2.21.6")
+      fluent_bit_enable_logs_collection = optional(bool, false)
+      fluent_bit_http_server            = optional(string, "Off")
+      fluent_bit_http_port              = optional(string, "")
+      fluent_bit_read_from_head         = optional(string, "Off")
+      fluent_bit_read_from_tail         = optional(string, "On")
+      fluent_bit_log_retention_days     = optional(number, 14)
+      namespace                         = optional(string, "amazon-cloudwatch")
+      }), {
+      fluent_bit_image_tag              = "1.8.10"
+      fluent_bit_enable_logs_collection = false
+      fluent_bit_http_server            = "Off"
+      fluent_bit_http_port              = ""
+      fluent_bit_read_from_head         = "Off"
+      fluent_bit_read_from_tail         = "On"
+      fluent_bit_log_retention_days     = 14
+      namespace                         = "amazon-cloudwatch"
     })
   })
 }

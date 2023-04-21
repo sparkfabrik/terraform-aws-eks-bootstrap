@@ -20,7 +20,7 @@ module "eks" {
   }
 
   cluster_enabled_log_types              = var.cluster.enabled_log_types
-  cloudwatch_log_group_retention_in_days = var.cluster.cloudwatch_log_group_retention_in_days
+  cloudwatch_log_group_retention_in_days = var.cluster.log_group_retention_in_days
 
   vpc_id     = var.vpc_id
   subnet_ids = var.subnet_ids
@@ -116,4 +116,28 @@ module "metrics_server" {
   chart_version     = var.cluster.metrics_server.chart_version
   namespace         = var.cluster.metrics_server.namespace
   helm_release_name = var.cluster.metrics_server.helm_release_name
+}
+
+module "fluentbit" {
+  source                            = "./modules/fluentbit"
+  cluster_name                      = var.cluster.name
+  namespace                         = var.cluster.fluentbit.namespace
+  fluent_bit_image_tag              = var.cluster.fluentbit.fluent_bit_image_tag
+  fluent_bit_enable_logs_collection = var.cluster.fluentbit.fluent_bit_enable_logs_collection
+  fluent_bit_region                 = var.aws_default_region
+  fluent_bit_http_server            = var.cluster.fluentbit.fluent_bit_http_server
+  fluent_bit_http_port              = var.cluster.fluentbit.fluent_bit_http_port
+  fluent_bit_read_from_head         = var.cluster.fluentbit.fluent_bit_read_from_head
+  fluent_bit_read_from_tail         = var.cluster.fluentbit.fluent_bit_read_from_tail
+  fluent_bit_log_retention_days     = var.cluster.fluentbit.fluent_bit_log_retention_days
+  account_id                        = var.account_id
+}
+
+module "ingress_nginx" {
+  source            = "./modules/ingress-nginx"
+  helm_release_name = var.cluster.ingress_nginx.helm_release_name
+  namespace         = var.cluster.ingress_nginx.namespace
+  chart_version     = var.cluster.ingress_nginx.chart_version
+  aws_tags          = var.cluster.ingress_nginx.aws_tags
+  nlb_name          = var.cluster.ingress_nginx.nlb_name
 }
