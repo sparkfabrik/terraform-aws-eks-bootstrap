@@ -1,5 +1,6 @@
 variable "aws_default_region" {
-  type = string
+  type        = string
+  description = "AWS default region"
 }
 
 variable "project" {
@@ -28,8 +29,8 @@ variable "cluster" {
     })
     eks_managed_node_groups = optional(map(object({
       min_size       = optional(number, 1)
-      max_size       = optional(number, 2)
-      desired_size   = optional(number, 1)
+      max_size       = optional(number, 3)
+      desired_size   = optional(number, 2)
       instance_types = optional(list(string), ["t3.small"])
       capacity_type  = optional(string, "SPOT")
       labels = optional(map(string), {
@@ -38,8 +39,8 @@ variable "cluster" {
       })), {
       default = {
         min_size       = 1
-        max_size       = 2
-        desired_size   = 1
+        max_size       = 3
+        desired_size   = 2
         instance_types = ["t3.small"]
         capacity_type  = "SPOT"
         labels = {
@@ -59,11 +60,11 @@ variable "cluster" {
     })
     # ALB Ingress Controller https://artifacthub.io/packages/helm/aws/aws-load-balancer-controller
     alb_controller = optional(object({
-      chart_version     = optional(string, "1.5.1")
+      chart_version     = optional(string, "1.5.2")
       namespace         = optional(string, "kube-system")
       helm_release_name = optional(string, "aws-load-balancer-controller")
       }), {
-      chart_version     = "1.5.1"
+      chart_version     = "1.5.2"
       namespace         = "kube-system"
       helm_release_name = "aws-load-balancer-controller"
     })
@@ -89,13 +90,52 @@ variable "cluster" {
       admin_group_name     = "admin-access"
       environment          = "prod"
     })
+    # Cert Manager https://artifacthub.io/packages/helm/jetstack/cert-manager
+    cert_manager = optional(object({
+      chart_version               = optional(string, "1.11.1")
+      namespace                   = optional(string, "cert-manager")
+      helm_release_name           = optional(string, "cert-manager")
+      cluster_issuer_name         = optional(string, "letsencrypt-prod")
+      secret_name                 = optional(string, "letsencrypt-prod")
+      staging_cluster_issuer_name = optional(string, "letsencrypt-staging")
+      staging_secret_name         = optional(string, "letsencrypt-staging")
+      email                       = optional(string, "example@example.com")
+      install_cluster_issuer      = optional(bool, true)
+      }), {
+      chart_version               = "1.11.1"
+      namespace                   = "cert-manager"
+      helm_release_name           = "cert-manager"
+      cluster_issuer_name         = "letsencrypt-prod"
+      secret_name                 = "letsencrypt-prod"
+      staging_cluster_issuer_name = "letsencrypt-staging"
+      staging_secret_name         = "letsencrypt-staging"
+      email                       = "example@example.com"
+      install_cluster_issuer      = true
+    })
+    # Metrics Server https://artifacthub.io/packages/helm/metrics-server/metrics-server
+    metrics_server = optional(object({
+      chart_version     = optional(string, "3.10.0")
+      namespace         = optional(string, "metrics-server")
+      helm_release_name = optional(string, "metrics-server")
+      }), {
+      chart_version     = "3.10.0"
+      namespace         = "metrics-server"
+      helm_release_name = "metrics-server"
+    })
   })
 }
 
 variable "vpc_id" {
-  type = string
+  type        = string
+  description = "VPC ID"
 }
 
 variable "subnet_ids" {
-  type = list(string)
+  type        = list(string)
+  description = "Subnet IDs"
+}
+
+variable "account_id" {
+  type        = string
+  description = "AWS Account ID"
 }
