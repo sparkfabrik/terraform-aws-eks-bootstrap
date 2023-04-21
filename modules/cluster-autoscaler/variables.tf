@@ -8,11 +8,6 @@ variable "namespace" {
   type        = string
 }
 
-variable "iam_role_arn" {
-  description = "Cluster Autoscaler IAM Role ARN"
-  type        = string
-}
-
 variable "cluster_name" {
   description = "Cluster Name"
   type        = string
@@ -26,10 +21,14 @@ variable "cluster_region" {
 variable "cpu_threshold" {
   description = "CPU Threshold"
   type        = number
-  default     = 0.8
 }
 
 variable "helm_release_name" {
   description = "Helm Release Name"
+  type        = string
+}
+
+variable "oidc_provider_arn" {
+  description = "OIDC Provider ARN"
   type        = string
 }
