@@ -1,3 +1,5 @@
+data "aws_caller_identity" "current" {}
+
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 19.13"
@@ -26,78 +28,47 @@ module "eks" {
   subnet_ids = var.subnet_ids
 
   # EKS Managed Node Group(s)
-  eks_managed_node_group_defaults = var.cluster.eks_managed_node_group_defaults
+  # eks_managed_node_group_defaults = var.cluster.eks_managed_node_group_defaults
 
-  eks_managed_node_groups = {
-    default = {
-      min_size     = 2
-      max_size     = 3
-      desired_size = 2
-
-      instance_types = ["t3.small"]
-      capacity_type  = "SPOT"
-      labels = {
-        role = "default"
-      }
-    }
-  }
+  eks_managed_node_groups = var.cluster.eks_managed_node_groups
 }
 
-# Application namespaces developer access
-module "cluster_access" {
-  source = "./modules/cluster-access"
+module "metrics_server" {
+  source = "./modules/metrics-server"
 
-  namespaces           = var.cluster.cluster_access.namespaces
-  developer_group_name = var.cluster.cluster_access.developer_group_name
-  admin_group_name     = var.cluster.cluster_access.admin_group_name
+  chart_version     = var.cluster.metrics_server.chart_version
+  namespace         = var.cluster.metrics_server.namespace
+  helm_release_name = var.cluster.metrics_server.helm_release_name
+}
+
+module "node_termination_handler" {
+  source = "./modules/node-termination-handler"
+
+  oidc_provider_arn = module.eks.oidc_provider_arn
+  chart_version     = var.cluster.node_termination_handler.chart_version
+  namespace         = var.cluster.node_termination_handler.namespace
+  helm_release_name = var.cluster.node_termination_handler.helm_release_name
+
+  depends_on = [module.metrics_server]
 }
 
 module "cluster_autoscaler" {
-  source = "./modules/helm-cluster-autoscaler"
+  source = "./modules/cluster-autoscaler"
 
   cluster_name      = var.cluster.name
   chart_version     = var.cluster.autoscaler.chart_version
   namespace         = var.cluster.autoscaler.namespace
   helm_release_name = var.cluster.autoscaler.helm_release_name
   cluster_region    = var.aws_default_region
-  iam_role_arn      = module.cluster_autoscaler_irsa_role.iam_role_arn
-  depends_on = [
-    module.metrics_server
-  ]
-}
-
-module "helm_alb_controller" {
-  source = "./modules/helm-alb-controller"
-
-  cluster_name      = var.cluster.name
-  chart_version     = var.cluster.alb_controller.chart_version
-  namespace         = var.cluster.alb_controller.namespace
-  helm_release_name = var.cluster.alb_controller.helm_release_name
-  cluster_region    = var.aws_default_region
-  iam_role_arn      = module.load_balancer_controller_irsa_role.iam_role_arn
-  vpc_id            = var.vpc_id
-  account_id        = var.account_id
-  depends_on = [
-    module.cert_manager,
-  ]
-}
-
-module "helm_node_termination-handler" {
-  source = "./modules/helm-node-termination-handler"
-
-  cluster_name      = var.cluster.name
-  chart_version     = var.cluster.node_termination_handler.chart_version
-  namespace         = var.cluster.node_termination_handler.namespace
-  helm_release_name = var.cluster.node_termination_handler.helm_release_name
-  cluster_region    = var.aws_default_region
-  iam_role_arn      = module.node_termination_handler_irsa_role.iam_role_arn
+  oidc_provider_arn = module.eks.oidc_provider_arn
+  cpu_threshold     = var.cluster.autoscaler.cpu_threshold
   depends_on = [
     module.metrics_server
   ]
 }
 
 module "cert_manager" {
-  source = "./modules/helm-certificate-manager"
+  source = "./modules/certificate-manager"
 
   chart_version               = var.cluster.cert_manager.chart_version
   namespace                   = var.cluster.cert_manager.namespace
@@ -110,12 +81,64 @@ module "cert_manager" {
   install_cluster_issuer      = var.cluster.cert_manager.install_cluster_issuer
 }
 
-module "metrics_server" {
-  source = "./modules/helm-metrics-server"
+module "alb_controller" {
+  source = "./modules/alb-controller"
 
-  chart_version     = var.cluster.metrics_server.chart_version
-  namespace         = var.cluster.metrics_server.namespace
-  helm_release_name = var.cluster.metrics_server.helm_release_name
+  cluster_name      = var.cluster.name
+  chart_version     = var.cluster.alb_controller.chart_version
+  namespace         = var.cluster.alb_controller.namespace
+  helm_release_name = var.cluster.alb_controller.helm_release_name
+  cluster_region    = var.aws_default_region
+  vpc_id            = var.vpc_id
+  oidc_provider_arn = module.eks.oidc_provider_arn
+  depends_on = [
+    module.cert_manager,
+  ]
+}
+
+# Application namespaces developer access
+module "cluster_access" {
+  source = "./modules/cluster-access"
+
+  namespaces           = var.cluster.cluster_access.namespaces
+  developer_group_name = var.cluster.cluster_access.developer_group_name
+  admin_group_name     = var.cluster.cluster_access.admin_group_name
+}
+
+
+data "aws_eks_cluster" "cluster" {
+  name = module.eks.cluster_name
+}
+
+data "aws_eks_cluster_auth" "cluster" {
+  name = module.eks.cluster_name
+}
+
+provider "kubernetes" {
+  host                   = module.eks.cluster_endpoint
+  cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
+
+  exec {
+    api_version = "client.authentication.k8s.io/v1beta1"
+    command     = "aws"
+    # This requires the awscli to be installed locally where Terraform is executed
+    args = ["eks", "get-token", "--cluster-name", module.eks.cluster_name]
+  }
+}
+
+provider "helm" {
+  kubernetes {
+    host                   = module.eks.cluster_endpoint
+    cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
+    token                  = data.aws_eks_cluster_auth.cluster.token
+  }
+}
+
+provider "kubectl" {
+  load_config_file       = false
+  host                   = module.eks.cluster_endpoint
+  cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
+  token                  = data.aws_eks_cluster_auth.cluster.token
 }
 
 module "fluentbit" {

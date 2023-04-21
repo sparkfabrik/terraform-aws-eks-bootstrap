@@ -24,41 +24,45 @@ variable "cluster" {
       instance_types = optional(list(string), ["t3.medium"])
       disk_size      = optional(number, 50)
       desired_size   = optional(number, 2)
+      labels = optional(map(string), {
+        role = "default"
+      })      
       }), {
       instance_types = ["t3.medium"]
       disk_size      = 50
-      desired_size   = 2
+      desired_size   = 1
+      labels = { role = "default" }
     })
     eks_managed_node_groups = optional(map(object({
       min_size       = optional(number, 1)
       max_size       = optional(number, 3)
-      desired_size   = optional(number, 2)
+      desired_size   = optional(number, 1)
       instance_types = optional(list(string), ["t3.small"])
       capacity_type  = optional(string, "SPOT")
       labels = optional(map(string), {
-        role = "default"
+        role = "spot"
       })
       })), {
       default = {
         min_size       = 1
         max_size       = 3
-        desired_size   = 2
+        desired_size   = 1
         instance_types = ["t3.small"]
         capacity_type  = "SPOT"
-        labels = {
-          role = "default"
-        }
-      }
+        labels = { role = "spot" }
+      }    
     })
     # Cluster Autoscaler https://artifacthub.io/packages/helm/cluster-autoscaler/cluster-autoscaler
     autoscaler = optional(object({
       chart_version     = optional(string, "9.28.0")
       namespace         = optional(string, "kube-system")
       helm_release_name = optional(string, "cluster-autoscaler")
+      cpu_threshold     = optional(string, "0.8")
       }), {
       chart_version     = "9.28.0"
       namespace         = "kube-system"
       helm_release_name = "cluster-autoscaler"
+      cpu_threshold     = "0.8"
     })
     # ALB Ingress Controller https://artifacthub.io/packages/helm/aws/aws-load-balancer-controller
     alb_controller = optional(object({
@@ -82,14 +86,14 @@ variable "cluster" {
     })
     cluster_access = optional(object({
       enable               = optional(bool, true)
-      developer_group_name = optional(string, "developer-access")
-      admin_group_name     = optional(string, "admin-access")
+      developer_group_name = optional(string, "cluster-developer")
+      admin_group_name     = optional(string, "cluster-admin")
       environment          = optional(string, "prod")
       namespaces           = optional(list(string), ["default"])
       }), {
       enable               = true
-      developer_group_name = "developer-access"
-      admin_group_name     = "admin-access"
+      developer_group_name = "cluster-developer"
+      admin_group_name     = "cluster-admin"
       environment          = "prod"
     })
     # Cert Manager https://artifacthub.io/packages/helm/jetstack/cert-manager
@@ -168,7 +172,3 @@ variable "subnet_ids" {
   description = "Subnet IDs"
 }
 
-variable "account_id" {
-  type        = string
-  description = "AWS Account ID"
-}
