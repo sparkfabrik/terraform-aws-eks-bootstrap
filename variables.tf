@@ -3,11 +3,6 @@ variable "aws_default_region" {
   description = "AWS default region"
 }
 
-variable "project" {
-  type        = string
-  description = "Project name"
-}
-
 ################################################################################
 # EKS Variables
 ################################################################################
