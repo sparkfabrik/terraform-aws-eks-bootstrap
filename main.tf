@@ -153,14 +153,14 @@ module "fluentbit" {
   fluent_bit_read_from_head         = var.cluster.fluentbit.fluent_bit_read_from_head
   fluent_bit_read_from_tail         = var.cluster.fluentbit.fluent_bit_read_from_tail
   fluent_bit_log_retention_days     = var.cluster.fluentbit.fluent_bit_log_retention_days
-  account_id                        = var.account_id
+  account_id                        = data.aws_caller_identity.current.account_id
 }
 
-module "ingress_nginx" {
-  source            = "./modules/ingress-nginx"
-  helm_release_name = var.cluster.ingress_nginx.helm_release_name
-  namespace         = var.cluster.ingress_nginx.namespace
-  chart_version     = var.cluster.ingress_nginx.chart_version
-  aws_tags          = var.cluster.ingress_nginx.aws_tags
-  nlb_name          = var.cluster.ingress_nginx.nlb_name
-}
+# module "ingress_nginx" {
+#   source            = "./modules/ingress-nginx"
+#   helm_release_name = var.cluster.ingress_nginx.helm_release_name
+#   namespace         = var.cluster.ingress_nginx.namespace
+#   chart_version     = var.cluster.ingress_nginx.chart_version
+#   aws_tags          = var.cluster.ingress_nginx.aws_tags
+#   nlb_name          = var.cluster.ingress_nginx.nlb_name
+# }
