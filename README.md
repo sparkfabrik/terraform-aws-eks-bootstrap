@@ -1,4 +1,41 @@
 # terraform-aws-eks-bootstrap
+
+
+
+Cluster applications:
+
+- Metric Server https://docs.aws.amazon.com/eks/latest/userguide/metrics-server.html
+
+- Cluster Autoscaler:
+  - https://docs.aws.amazon.com/eks/latest/userguide/autoscaling.html
+  - https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/FAQ.md#what-are-the-parameters-to-ca
+
+- Node Termination Handler:
+  - https://artifacthub.io/packages/helm/aws/aws-node-termination-handler
+  - https://github.com/aws/aws-node-termination-handler
+  - https://github.com/aws/aws-node-termination-handler/tree/main/config/helm/aws-node-termination-handler
+
+- Fluenti Bit with Container Insights:
+  - https://github.com/aws/aws-for-fluent-bit
+  - https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/deploy-container-insights-EKS.html
+  - https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Container-Insights-setup-logs-FluentBit.html
+
+- Calico:
+  - https://docs.aws.amazon.com/eks/latest/userguide/calico.html
+
+- AWS Load Balancer Controller
+  - https://kubernetes-sigs.github.io/aws-load-balancer-controller/
+
+### 
+
+$ aws eks update-kubeconfig --region eu-west-1 --name toitalygroup
+
+## Links
+
+- https://aws.github.io/aws-eks-best-practices/
+- https://docs.aws.amazon.com/eks/latest/userguide/autoscaling.html
+
+
 <!-- BEGIN_TF_DOCS -->
 ## Providers
 

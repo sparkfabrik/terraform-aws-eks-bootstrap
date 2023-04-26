@@ -13,7 +13,7 @@ resources:
     cpu: 100m
     memory: 200Mi
 
-enableCertManager: true
+enableCertManager: false
 
 region: ${cluster_region}
 

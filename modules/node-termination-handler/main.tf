@@ -1,5 +1,6 @@
 locals {
   serviceaccount_name = "aws-node-termination-handler"
+  namespace           = "kube-system"
 }
 
 module "node_termination_handler_irsa_role" {
@@ -11,20 +12,20 @@ module "node_termination_handler_irsa_role" {
 
   oidc_providers = {
     ex = {
-      provider_arn               = var.oidc_provider_arn
+      provider_arn = var.oidc_provider_arn
       namespace_service_accounts = [
-        "${var.namespace}:${var.helm_release_name}"
+        "${local.namespace}:${local.serviceaccount_name}}"
       ]
     }
   }
 }
 
 resource "helm_release" "aws_node_termination_handler" {
-  name       = var.helm_release_name
   repository = "https://aws.github.io/eks-charts/"
-  chart      = var.helm_release_name
-  namespace  = var.namespace
+  chart      = "aws-node-termination-handler"
+  name       = "aws-node-termination-handler"
   version    = var.chart_version
+  namespace  = local.namespace
 
   values = [templatefile(
     "${path.module}/files/values.yaml",

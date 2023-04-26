@@ -9,25 +9,27 @@ module "cluster_autoscaler_irsa_role" {
   oidc_providers = {
     ex = {
       provider_arn               = var.oidc_provider_arn
-      namespace_service_accounts = ["${var.namespace}:${var.helm_release_name}-aws-cluster-autoscaler"]
+      namespace_service_accounts = ["kube-system:cluster-autoscaler-aws-cluster-autoscaler"]
     }
   }
 }
 
+# Cluster Autoscaler https://artifacthub.io/packages/helm/cluster-autoscaler/cluster-autoscaler
+# https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/FAQ.md#what-are-the-parameters-to-ca
 resource "helm_release" "cluster_autoscaler" {
-  name       = var.helm_release_name
   repository = "https://kubernetes.github.io/autoscaler"
   chart      = "cluster-autoscaler"
-  namespace  = var.namespace
+  name       = "cluster-autoscaler"
   version    = var.chart_version
+  namespace  = "kube-system"
 
   values = [templatefile(
     "${path.module}/files/values.yaml",
     {
-      iam_role_arn   = module.cluster_autoscaler_irsa_role.iam_role_arn
-      cluster_name   = var.cluster_name
-      cluster_region = var.cluster_region
-      cpu_threshold  = var.cpu_threshold
+      iam_role_arn             = module.cluster_autoscaler_irsa_role.iam_role_arn
+      cluster_name             = var.cluster_name
+      cluster_region           = var.cluster_region
+      scale_down_cpu_threshold = var.scale_down_cpu_threshold
     }
   )]
 }

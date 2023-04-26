@@ -2,21 +2,17 @@ variable "cluster_name" {
   type = string
 }
 
-variable "fluent_bit_image_tag" {
+variable "cluster_region" {
   type = string
 }
 
-variable "namespace" {
+variable "fluent_bit_image_tag" {
   type = string
 }
 
 variable "fluent_bit_enable_logs_collection" {
   type    = bool
   default = false
-}
-
-variable "fluent_bit_region" {
-  type = string
 }
 
 variable "fluent_bit_http_server" {

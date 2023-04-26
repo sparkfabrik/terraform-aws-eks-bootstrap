@@ -1,23 +1,14 @@
-resource "kubernetes_namespace" "namespace" {
-  metadata {
-    annotations = {}
-    labels      = {}
-    name        = var.namespace
-  }
-}
+# Metrics Server https://artifacthub.io/packages/helm/metrics-server/metrics-server
 
 resource "helm_release" "metric_server" {
-  name       = var.helm_release_name
   repository = "https://kubernetes-sigs.github.io/metrics-server"
   chart      = "metrics-server"
-  namespace  = var.namespace
+  name       = "metrics-server"
   version    = var.chart_version
+  namespace  = "kube-system"
 
   values = [templatefile(
     "${path.module}/files/values.yaml",
     {}
   )]
-  depends_on = [
-    kubernetes_namespace.namespace
-  ]
 }

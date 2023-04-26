@@ -19,65 +19,61 @@ variable "cluster" {
       instance_types = optional(list(string), ["t3.medium"])
       disk_size      = optional(number, 50)
       desired_size   = optional(number, 2)
-      labels = optional(map(string), {
-        role = "default"
-      })      
+      labels         = optional(map(string), { nodepool = "default" })
       }), {
       instance_types = ["t3.medium"]
       disk_size      = 50
       desired_size   = 1
-      labels = { role = "default" }
+      labels         = { nodepool = "default" }
     })
     eks_managed_node_groups = optional(map(object({
       min_size       = optional(number, 1)
       max_size       = optional(number, 3)
       desired_size   = optional(number, 1)
+      disk_size      = optional(number, 20)
       instance_types = optional(list(string), ["t3.small"])
       capacity_type  = optional(string, "SPOT")
-      labels = optional(map(string), {
-        role = "spot"
-      })
-      })), {
+      labels         = optional(map(string), { nodepool = "spot" })
+      })), {        
       default = {
         min_size       = 1
         max_size       = 3
         desired_size   = 1
-        instance_types = ["t3.small"]
+        instance_types = ["t3.small", "t3.medium"]
+        disk_size      = 20
         capacity_type  = "SPOT"
-        labels = { role = "spot" }
-      }    
+        labels         = { nodepool = "spot" }
+      }
     })
-    # Cluster Autoscaler https://artifacthub.io/packages/helm/cluster-autoscaler/cluster-autoscaler
+    metrics_server = optional(object({
+      chart_version = string
+      }), {
+      chart_version = "3.10.0"
+    })
     autoscaler = optional(object({
-      chart_version     = optional(string, "9.28.0")
-      namespace         = optional(string, "kube-system")
-      helm_release_name = optional(string, "cluster-autoscaler")
-      cpu_threshold     = optional(string, "0.8")
+      chart_version            = optional(string, "9.28.0")
+      scale_down_cpu_threshold = optional(string, "0.8")
       }), {
-      chart_version     = "9.28.0"
-      namespace         = "kube-system"
-      helm_release_name = "cluster-autoscaler"
-      cpu_threshold     = "0.8"
+      chart_version            = "9.28.0"
+      scale_down_cpu_threshold = "0.8"
     })
-    # ALB Ingress Controller https://artifacthub.io/packages/helm/aws/aws-load-balancer-controller
-    alb_controller = optional(object({
-      chart_version     = optional(string, "1.5.2")
-      namespace         = optional(string, "kube-system")
-      helm_release_name = optional(string, "aws-load-balancer-controller")
-      }), {
-      chart_version     = "1.5.2"
-      namespace         = "kube-system"
-      helm_release_name = "aws-load-balancer-controller"
-    })
-    # Node Termination Handler https://artifacthub.io/packages/helm/aws/aws-node-termination-handler
     node_termination_handler = optional(object({
       chart_version     = optional(string, "0.21.0")
-      namespace         = optional(string, "kube-system")
-      helm_release_name = optional(string, "aws-node-termination-handler")
       }), {
       chart_version     = "0.21.0"
-      namespace         = "kube-system"
-      helm_release_name = "aws-node-termination-handler"
+    })    
+    # ALB Ingress Controller https://artifacthub.io/packages/helm/aws/aws-load-balancer-controller
+    alb_controller = optional(object({
+      chart_version = optional(string, "1.5.2")
+      namespace     = optional(string, "kube-system")
+      }), {
+      chart_version = "1.5.2"
+      namespace     = "kube-system"
+    })
+    calico = optional(object({
+      chart_version = optional(string, "3.25.1")
+      }), {
+      chart_version = "3.25.1"
     })
     cluster_access = optional(object({
       enable               = optional(bool, true)
@@ -113,16 +109,6 @@ variable "cluster" {
       email                       = "example@example.com"
       install_cluster_issuer      = true
     })
-    # Metrics Server https://artifacthub.io/packages/helm/metrics-server/metrics-server
-    metrics_server = optional(object({
-      chart_version     = optional(string, "3.10.0")
-      namespace         = optional(string, "metrics-server")
-      helm_release_name = optional(string, "metrics-server")
-      }), {
-      chart_version     = "3.10.0"
-      namespace         = "metrics-server"
-      helm_release_name = "metrics-server"
-    })
     ingress_nginx = optional(object({
       chart_version     = optional(string, "4.6.0")
       namespace         = optional(string, "ingress-nginx")
@@ -136,24 +122,29 @@ variable "cluster" {
       aws_tags          = {}
     })
     fluentbit = optional(object({
-      fluent_bit_image_tag              = optional(string, "2.21.6")
-      fluent_bit_enable_logs_collection = optional(bool, false)
+      fluent_bit_image_tag              = optional(string, "2.28.4")
+      fluent_bit_enable_logs_collection = optional(bool, true)
       fluent_bit_http_server            = optional(string, "Off")
       fluent_bit_http_port              = optional(string, "")
       fluent_bit_read_from_head         = optional(string, "Off")
       fluent_bit_read_from_tail         = optional(string, "On")
       fluent_bit_log_retention_days     = optional(number, 14)
-      namespace                         = optional(string, "amazon-cloudwatch")
       }), {
-      fluent_bit_image_tag              = "1.8.10"
-      fluent_bit_enable_logs_collection = false
+      fluent_bit_image_tag              = "2.28.4"
+      fluent_bit_enable_logs_collection = true
       fluent_bit_http_server            = "Off"
       fluent_bit_http_port              = ""
       fluent_bit_read_from_head         = "Off"
       fluent_bit_read_from_tail         = "On"
       fluent_bit_log_retention_days     = 14
-      namespace                         = "amazon-cloudwatch"
     })
+    # fluent_bit = optional(object({
+    #   chart_version     = optional(string, "2.28.4")
+    #   namespace         = optional(string, "amazon-cloudwatch")
+    #   }), {
+    #   chart_version     = "2.28.4"
+    #   namespace         = "amazon-cloudwatch"
+    # })
   })
 }
 

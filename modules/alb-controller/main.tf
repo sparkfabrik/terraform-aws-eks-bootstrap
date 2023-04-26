@@ -8,23 +8,24 @@ module "load_balancer_controller_irsa_role" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.17"
 
-  role_name                              = "load-balancer-controller"
+  role_name                              = local.serviceaccount_name
   attach_load_balancer_controller_policy = true
 
   oidc_providers = {
     ex = {
       provider_arn               = var.oidc_provider_arn
-      namespace_service_accounts = ["${var.namespace}:${var.helm_release_name}"]
+      namespace_service_accounts = ["${var.namespace}:${local.serviceaccount_name}"]
     }
   }
 }
 
 resource "helm_release" "aws_load_balancer_controller_release" {
-  name       = "aws-load-balancer-controller"
   repository = "https://aws.github.io/eks-charts"
+  name       = "aws-load-balancer-controller"
   chart      = "aws-load-balancer-controller"
-  namespace  = var.namespace
   version    = var.chart_version
+  namespace  = var.namespace  
+  
   values = [templatefile(
     "${path.module}/files/values.yaml",
     {

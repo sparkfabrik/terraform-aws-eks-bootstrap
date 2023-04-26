@@ -12,4 +12,6 @@ resources:
 extraArgs:
   stderrthreshold: error
   skip-nodes-with-local-storage: false
-  scale-down-utilization-threshold: ${cpu_threshold}
+  balance-similar-node-groups: true
+  skip-nodes-with-system-pods: false
+  scale-down-utilization-threshold: ${scale_down_cpu_threshold}

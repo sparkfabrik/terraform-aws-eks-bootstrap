@@ -3,11 +3,6 @@ variable "chart_version" {
   type        = string
 }
 
-variable "namespace" {
-  description = "Cluster Autoscaler Namespace"
-  type        = string
-}
-
 variable "cluster_name" {
   description = "Cluster Name"
   type        = string
@@ -18,14 +13,9 @@ variable "cluster_region" {
   type        = string
 }
 
-variable "cpu_threshold" {
+variable "scale_down_cpu_threshold" {
   description = "CPU Threshold"
   type        = number
-}
-
-variable "helm_release_name" {
-  description = "Helm Release Name"
-  type        = string
 }
 
 variable "oidc_provider_arn" {

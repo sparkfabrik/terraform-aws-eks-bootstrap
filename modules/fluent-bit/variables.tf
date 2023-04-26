@@ -1,25 +1,20 @@
-variable "chart_version" {
-  description = "ALB Controller Chart Version"
+variable "namespace" {
   type        = string
+  description = "Namespace to install Fluent Bit"
 }
 
-variable "namespace" {
-  description = "ALB Controller Namespace"
+variable "chart_version" {
   type        = string
+  description = "Version of the Fluent Bit chart to install"
 }
 
 variable "cluster_name" {
-  description = "Cluster Name"
+  description = "Cluster name"
   type        = string
 }
 
 variable "cluster_region" {
   description = "Cluster Region"
-  type        = string
-}
-
-variable "vpc_id" {
-  description = "VPC ID"
   type        = string
 }
 
