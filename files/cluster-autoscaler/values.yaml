@@ -1,0 +1,15 @@
+autoDiscovery:
+  clusterName: ${cluster_name}
+awsRegion: ${cluster_region}
+rbac:
+  serviceAccount:
+    annotations:
+      eks.amazonaws.com/role-arn: ${iam_role_arn}
+resources:
+  requests:
+    cpu: 50m
+    memory: 128Mi
+extraArgs:
+  stderrthreshold: error
+  skip-nodes-with-local-storage: false
+ 

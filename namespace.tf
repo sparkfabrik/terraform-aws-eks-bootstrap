@@ -1,11 +1,13 @@
-# resource "kubernetes_namespace" "namespace" {
-#   for_each = toset(var.application_projects.namespace)
+## Application Namespaces
+resource "kubernetes_namespace" "application_namespace" {
+  for_each = var.cluster_application
 
-#   metadata {
-#     name = "${var.application_projects.name}-${each.value}"
+  metadata {
+    labels = {
+      name = each.value.namespace
+    }
 
-#     labels = {
-#       name = "${var.application_projects.name}-${each.value}"
-#     }    
-#   }
-# }
+    name = each.value.namespace
+  }
+  depends_on = [module.eks]
+}
