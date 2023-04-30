@@ -104,7 +104,7 @@ locals {
     "\n---\n",
     replace(
       replace(file("${path.module}/files/cloudwatch-fluentbit/fluent-bit-config-file-cm.yaml"), "___namespace___", local.fluent_bit.namespace),
-      "___fluent_bit_log_retention_days___", "${local.fluent_bit.log_retention_days}"
+      "___fluent_bit_log_retention_days___", local.fluent_bit.log_retention_days
     )
   )
   cwfb_config_file_cm_manifest_count = length(local.cwfb_config_file_cm_manifest)

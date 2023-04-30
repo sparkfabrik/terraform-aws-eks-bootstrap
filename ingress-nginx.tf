@@ -36,6 +36,6 @@ resource "helm_release" "ingress_nginx" {
 
 data "aws_lb" "ingress_nlb" {
   tags = {
-    "name" = "ingress-nginx-nlb"
+    "name" = local.ingress_nginx_nlb_name
   }
 }
