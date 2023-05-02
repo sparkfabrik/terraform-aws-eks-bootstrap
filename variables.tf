@@ -1,3 +1,4 @@
+## General
 variable "project" {
   type        = string
   description = "Project name"
@@ -5,6 +6,10 @@ variable "project" {
 
 ## VPC
 variable "vpc_id" {
+  type = string
+}
+
+variable "vpc_cidr_block" {
   type = string
 }
 
@@ -20,7 +25,7 @@ variable "cluster_name" {
 
 variable "cluster_version" {
   type        = string
-  description = "The Kubernetes version to use for the EKS cluster. Defaults to the latest supported version"
+  description = "The Kubernetes version to use for the EKS cluster."
   default     = "1.24"
 }
 
@@ -50,8 +55,34 @@ variable "cluster_enabled_log_types" {
 
 variable "cloudwatch_log_group_retention_in_days" {
   type        = number
-  description = "Number of days to retain log events. Default retention - 7 days"
+  description = "Number of days to retain log events."
   default     = 7
+}
+
+## Cluster node group
+variable "eks_managed_node_groups" {
+  type = any
+  default = {
+    core_pool = {
+      min_size       = 1
+      max_size       = 4
+      desired_size   = 2
+      instance_types = ["t3.medium"]
+      labels = {
+        Pool = "core"
+      }
+      # taints = {
+      #   dedicated = {
+      #     key    = "dedicated"
+      #     value  = "gpuGroup"
+      #     effect = "NO_SCHEDULE"
+      #   }
+      # }
+      tags = {
+        Pool = "core"
+      }
+    }
+  }
 }
 
 ## Cluster access
@@ -74,8 +105,140 @@ variable "developer_users" {
   type = list(any)
 }
 
-## Cluster Applications
-variable "cluster_application" {
+## Cluster applications
+variable "enable_metric_server" {
+  type        = bool
+  description = "Enable Metric Server"
+  default     = true
+}
+
+variable "metric_server_helm_config" {
+  type        = any
+  default     = {}
+  description = "Metric Server Helm Chart Configuration"
+}
+
+variable "enable_aws_node_termination_handler" {
+  type        = bool
+  default     = true
+  description = "Enable AWS Node Termination Handler"
+}
+
+variable "aws_node_termination_handler_helm_config" {
+  type        = any
+  default     = {}
+  description = "Node Termination handler Helm Chart Configuration"
+}
+
+variable "enable_aws_alb_controller" {
+  type        = bool
+  default     = false
+  description = "Enable AWS Load Balancer Controller"
+}
+
+variable "aws_alb_controller_helm_config" {
+  type        = any
+  default     = {}
+  description = "AWS Load Balancer Controller Helm Chart Configuration"
+}
+
+variable "enable_cluster_autoscaler" {
+  type        = bool
+  default     = true
+  description = "Enable Cluster Autoscaler"
+}
+
+variable "cluster_autoscaler_helm_config" {
+  type        = any
+  default     = {}
+  description = "Cluster Autoscaler Helm Chart Configuration"
+}
+
+variable "enable_cert_manager" {
+  type        = bool
+  default     = true
+  description = "Enable Cert Manager"
+}
+
+variable "cert_manager_helm_config" {
+  type        = any
+  default     = {}
+  description = "Cert Manager Helm Chart Configuration"
+}
+
+variable "install_letsencrypt_issuers" {
+  type        = bool
+  default     = true
+  description = "Install Let's Encrypt Issuers"
+}
+
+variable "letsencrypt_email" {
+  type        = string
+  default     = "example@example.com"
+  description = "Email address for expiration emails from Let's Encrypt."
+}
+
+variable "enable_ingress_nginx" {
+  type        = bool
+  default     = true
+  description = "Enable Ingress Nginx"
+}
+
+variable "ingress_nginx_helm_config" {
+  type        = any
+  default     = {}
+  description = "Ingress Nginx Helm Chart Configuration"
+}
+
+variable "enable_aws_ebs_csi_driver" {
+  type        = bool
+  default     = true
+  description = "Enable AWS EBS CSI Driver"
+}
+
+variable "aws_ebs_csi_driver_helm_config" {
+  type        = any
+  default     = {}
+  description = "AWS EBS csi driver Helm Chart Configuration"
+}
+
+variable "enable_ecr" {
+  type        = bool
+  default     = true
+  description = "Enable ECR"
+}
+
+variable "enable_gitlab_runner" {
+  type        = bool
+  default     = true
+  description = "Enable Gitlab Runner"
+}
+
+variable "gitlab_runner_registration_token" {
+  type = string
+  description = "Gitlab Runner Registration Token"
+}
+
+variable "gitlab_runner_tags" {
+  type        = list(string)
+  default     = ["aws"]
+  description = "Gitlab Runner Helm Chart Configuration"
+}
+
+variable "enable_calico" {
+  type        = bool
+  default     = false
+  description = "Enable Calico"
+}
+
+variable "calico_helm_config" {
+  type        = any
+  default     = {}
+  description = "Calico Helm Chart Configuration"
+}
+
+## Customer application
+variable "customer_application" {
   type = map(object({
     namespace = string
   }))

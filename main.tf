@@ -14,15 +14,6 @@ module "eks" {
   subnet_ids = var.private_subnet_ids
 
   cluster_addons = {
-    coredns = {
-      most_recent = true
-    }
-    kube-proxy = {
-      most_recent = true
-    }
-    aws-ebs-csi-driver = {
-      most_recent = true
-    }
     vpc-cni = {
       most_recent = true
     }
@@ -30,35 +21,9 @@ module "eks" {
 
   # Enable OIDC Provider
   enable_irsa = true
-  eks_managed_node_groups = {
-    default_pool = {
-      node_group_name = "default-pool"
-      instance_types  = ["t3.medium"]
-      min_size        = 1
-      max_size        = 3
-      desired_size    = 2
-      subnets         = var.private_subnet_ids
-      labels = {
-        Environment = "test"
-      }
-      # taints = {
-      #   dedicated = {
-      #     key    = "dedicated"
-      #     value  = "gpuGroup"
-      #     effect = "NO_SCHEDULE"
-      #   }
-      # }      
-    }
-    spot_pool = {
-      node_group_name = "spot-pool"
-      instance_types  = ["t3.medium"]
-      min_size        = 0
-      max_size        = 10
-      desired_size    = 0
-      capacity_type   = "SPOT"
-      subnets         = var.private_subnet_ids
-    }
-  }
+
+  eks_managed_node_group_defaults = local.eks_managed_node_group_defaults
+  eks_managed_node_groups         = var.eks_managed_node_groups
 
   cluster_enabled_log_types              = var.cluster_enabled_log_types
   cloudwatch_log_group_retention_in_days = var.cloudwatch_log_group_retention_in_days
@@ -73,8 +38,18 @@ module "eks" {
   }
 }
 
-module "cluster_access" {
-  source     = "./cluster-access"
-  namespaces = keys(var.cluster_application)
-  depends_on = [module.eks, kubernetes_namespace.application_namespace]
+module "gitlab_runner" {
+  source = "github.com/sparkfabrik/terraform-aws-eks-gitlab-runner?ref=b31b6c9"
+
+  # The registration token is from https://gitlab.sparkfabrik.com/groups/toitaly-group/-/runners
+  runner_registration_token = var.gitlab_runner_registration_token
+  runner_tags               = join(",", var.gitlab_runner_tags)
+  eks_cluster_name          = module.eks.cluster_name
+  add_external_runner_user  = true
 }
+
+# module "cluster_access" {
+#   source     = "./cluster-access"
+#   namespaces = keys(var.cluster_application)
+#   depends_on = [module.eks, kubernetes_namespace.application_namespace]
+# }

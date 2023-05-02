@@ -1,0 +1,11 @@
+installCRDs: true
+
+# ingressShim:
+#   defaultIssuerName: ${cluster_issuer_name}
+#   defaultIssuerKind: ClusterIssuer
+
+cainjector:
+  resources:
+    requests:
+      cpu: 10m
+      memory: 32Mi

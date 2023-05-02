@@ -1,4 +1,11 @@
 locals {
+  # Node group default settings
+  eks_managed_node_group_defaults = {
+    subnets   = var.private_subnet_ids
+    disk_size = 30
+    capacity_type  = "ON_DEMAND"
+  }
+
   admin_user_map_users = [
     for admin_user in var.admin_users :
     {

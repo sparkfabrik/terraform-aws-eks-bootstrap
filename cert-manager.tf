@@ -1,51 +1,22 @@
 ## https://artifacthub.io/packages/helm/cert-manager/cert-manager
 locals {
-  cert_manager_namespace                   = "cert-manager"
-  cert_manager_chart_version               = "v1.11.1"
-  cert_manager_cluster_issuer_name         = "letsencrypt-${var.project}"
-  cert_manager_staging_cluster_issuer_name = "letsencrypt-${var.project}-staging"
-  cert_manager_contact_email               = "example@example.com"
-}
-
-resource "helm_release" "cert_manager" {
-  name             = "certificate-manager"
-  repository       = "https://charts.jetstack.io"
-  chart            = "cert-manager"
-  namespace        = local.cert_manager_namespace
-  version          = local.cert_manager_chart_version
-  create_namespace = true
-
-  set {
-    name  = "installCRDs"
-    value = "true"
+  default_cert_manager_helm_config = {
+    name              = "certificate-manager"
+    repository        = "https://charts.jetstack.io"
+    helm_release_name = "cert-manager"
+    chart_version     = "v1.11.1"
+    namespace         = "cert-manager"
+    create_namespace  = true
   }
 
-  set {
-    name  = "ingressShim.defaultIssuerName"
-    value = local.cert_manager_cluster_issuer_name
-  }
+  cert_manager_helm_config = merge(
+    local.default_cert_manager_helm_config,
+    var.cert_manager_helm_config
+  )
 
-  set {
-    name  = "ingressShim.defaultIssuerKind"
-    value = "ClusterIssuer"
-  }
+  cert_manager_cluster_issuer_name         = "letsencrypt-${var.cluster_name}"
+  cert_manager_staging_cluster_issuer_name = "letsencrypt-${var.cluster_name}-staging"
 
-  set {
-    name  = "cainjector.resources.requests.cpu"
-    value = "5m"
-  }
-
-  set {
-    name  = "cainjector.resources.requests.memory"
-    value = "160Mi"
-  }
-
-  depends_on = [
-    module.eks, kubernetes_namespace.application_namespace
-  ]
-}
-
-locals {
   cluster_issuer_manifests = split(
     "\n---\n",
     templatefile(
@@ -55,15 +26,44 @@ locals {
         secret_name                 = local.cert_manager_cluster_issuer_name
         staging_cluster_issuer_name = local.cert_manager_staging_cluster_issuer_name
         staging_secret_name         = local.cert_manager_staging_cluster_issuer_name
-        email                       = local.cert_manager_contact_email
+        email                       = var.letsencrypt_email
       }
     )
   )
-  cluster_issuer_manifests_count = length(local.cluster_issuer_manifests)
+  cluster_issuer_manifests_count = length(local.cluster_issuer_manifests)  
+}
+
+resource "kubernetes_namespace" "cert_manager" {
+  count = try(local.cert_manager_helm_config["create_namespace"], true) && local.cert_manager_helm_config["namespace"] != "kube-system" && var.enable_cert_manager ? 1 : 0
+
+  metadata {
+    name = local.cert_manager_helm_config["namespace"]
+  }
+}
+
+resource "helm_release" "cert_manager" {
+  count = var.enable_cert_manager ? 1 : 0
+
+  name       = local.cert_manager_helm_config.name
+  repository = local.cert_manager_helm_config.repository
+  chart      = local.cert_manager_helm_config.helm_release_name
+  namespace  = local.cert_manager_helm_config.namespace
+  version    = local.cert_manager_helm_config.chart_version
+
+  values = [templatefile(
+    "${path.module}/files/cert-manager/values.yaml",
+    {
+      cluster_issuer_name   = "letsencrypt-${var.cluster_name}"
+    }
+  )]
+
+  depends_on = [
+    module.eks, kubernetes_namespace.cert_manager
+  ]
 }
 
 resource "kubectl_manifest" "cert_manager_cluster_issuer" {
-  count      = local.cluster_issuer_manifests_count
+  count      = var.install_letsencrypt_issuers ? local.cluster_issuer_manifests_count : 0
 
   yaml_body  = local.cluster_issuer_manifests[count.index]
   depends_on = [helm_release.cert_manager]

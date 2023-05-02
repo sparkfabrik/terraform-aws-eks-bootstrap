@@ -1,6 +1,6 @@
-## Application Namespaces
-resource "kubernetes_namespace" "application_namespace" {
-  for_each = var.cluster_application
+## Customer application Namespace
+resource "kubernetes_namespace" "customer_application" {
+  for_each = var.customer_application
 
   metadata {
     labels = {
@@ -9,5 +9,6 @@ resource "kubernetes_namespace" "application_namespace" {
 
     name = each.value.namespace
   }
+
   depends_on = [module.eks]
 }
