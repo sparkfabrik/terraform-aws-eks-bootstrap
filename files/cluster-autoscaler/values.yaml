@@ -4,7 +4,7 @@ awsRegion: ${cluster_region}
 rbac:
   serviceAccount:
     annotations:
-      eks.amazonaws.com/role-arn: "${iam_role_arn}"
+      eks.amazonaws.com/role-arn: ${iam_role_arn}
 resources:
   requests:
     cpu: 50m
@@ -12,4 +12,3 @@ resources:
 extraArgs:
   stderrthreshold: error
   skip-nodes-with-local-storage: false
-  scale-down-utilization-threshold: ${cpu_threshold}

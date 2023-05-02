@@ -3,9 +3,11 @@ variable "namespaces" {
 }
 
 variable "developer_group_name" {
-  type = string
+  type    = string
+  default = "developer-access"
 }
 
 variable "admin_group_name" {
-  type = string
+  type    = string
+  default = "admin-access"
 }

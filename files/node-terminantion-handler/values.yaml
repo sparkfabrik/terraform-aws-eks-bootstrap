@@ -13,4 +13,3 @@ resources:
 
 # enableRebalanceMonitoring If true, cordon nodes when the rebalance recommendation notice is received. Only used in IMDS mode.
 enableRebalanceMonitoring: true
-

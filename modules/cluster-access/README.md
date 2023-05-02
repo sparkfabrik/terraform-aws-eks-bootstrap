@@ -20,7 +20,19 @@ AWS_DEFAULT_REGION=<cluster region>
 Launch the `aws cli` container as follow:
 
 ```bash
-$ docker run --rm -it --env-file=<the env file with AWS credentials> ghcr.io/sparkfabrik/aws-tools:latest
+$ docker run --rm -it --env-file=<the env file with AWS credentials> --entrypoint bash amazon/aws-cli:latest
 ```
 
-If all the infromations are correct, and you have only one cluster, the `docker-entrypoint` should automatically configure your `Kubeconfig` in order to access to the EKS cluster.
+Launch the following commands inside the shell of the container:
+
+```bash
+curl -o /usr/local/bin/kubectl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+curl -o /usr/local/bin/jq -LO "https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64"
+chmod +x /usr/local/bin/{kubectl,jq}
+alias k=kubectl
+export CLUSTER_NAME="$(aws eks list-clusters | jq --raw-output '.clusters[0]')"
+export KUBECONFIG="/aws/${CLUSTER_NAME}_kubeconfig"
+aws eks update-kubeconfig --name "${CLUSTER_NAME}" --kubeconfig "${KUBECONFIG}"
+```
+
+Now you have the access to all the application namespaces with your configured role.
