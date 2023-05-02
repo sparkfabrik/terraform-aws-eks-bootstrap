@@ -41,7 +41,7 @@ module "eks" {
 module "gitlab_runner" {
   count = var.enable_gitlab_runner ? 1 : 0
 
-  source = "github.com/sparkfabrik/terraform-aws-eks-gitlab-runner?ref=dc60f3d"
+  source = "github.com/sparkfabrik/terraform-aws-eks-gitlab-runner?ref=a57ede7"
 
   # The registration token is from https://gitlab.sparkfabrik.com/groups/toitaly-group/-/runners
   runner_registration_token   = var.gitlab_runner_registration_token
