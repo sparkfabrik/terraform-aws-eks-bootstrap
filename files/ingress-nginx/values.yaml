@@ -25,12 +25,12 @@ controller:
       enabled: false
 
   # Mutually exclusive with keda autoscaling
-  # autoscaling:
-  #   enabled: true
-  #   minReplicas: 1
-  #   maxReplicas: 3
-  #   targetCPUUtilizationPercentage: 80
-  #   targetMemoryUtilizationPercentage: 80
+  autoscaling:
+    enabled: true
+    minReplicas: 1
+    maxReplicas: 3
+    targetCPUUtilizationPercentage: 80
+    targetMemoryUtilizationPercentage: 80
 
   service:
     ## Set external traffic policy to: "Local" to preserve source IP on

@@ -1,3 +1,2 @@
 installation: 
   kubernetesProvider: EKS
-  
