@@ -41,13 +41,13 @@ module "eks" {
 module "gitlab_runner" {
   count = var.enable_gitlab_runner ? 1 : 0
 
-  source = "github.com/sparkfabrik/terraform-aws-eks-gitlab-runner?ref=e6e20e2"
+  source = "github.com/sparkfabrik/terraform-aws-eks-gitlab-runner?ref=dc60f3d"
 
   # The registration token is from https://gitlab.sparkfabrik.com/groups/toitaly-group/-/runners
-  runner_registration_token = var.gitlab_runner_registration_token
-  runner_tags               = join(",", var.gitlab_runner_tags)
-  eks_cluster_name          = module.eks.cluster_name
-  add_external_runner_user  = true
+  runner_registration_token   = var.gitlab_runner_registration_token
+  runner_tags                 = join(",", var.gitlab_runner_tags)
+  eks_cluster_oidc_issuer_url = module.eks.cluster_oidc_issuer_url
+  add_external_runner_user    = true
 }
 
 # module "cluster_access" {
