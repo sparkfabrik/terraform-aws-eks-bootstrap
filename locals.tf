@@ -2,7 +2,7 @@ locals {
   # Node group default settings
   eks_managed_node_group_defaults = {
     subnets   = var.private_subnet_ids
-    disk_size = 30
+    disk_size = 50
     capacity_type  = "ON_DEMAND"
   }
 
