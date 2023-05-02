@@ -47,6 +47,7 @@ module "gitlab_runner" {
   runner_registration_token   = var.gitlab_runner_registration_token
   runner_tags                 = join(",", var.gitlab_runner_tags)
   eks_cluster_oidc_issuer_url = module.eks.cluster_oidc_issuer_url
+  add_external_runner_user    = var.add_gitlab_runner_external_user
 }
 
 # module "cluster_access" {
