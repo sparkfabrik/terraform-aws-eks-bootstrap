@@ -54,7 +54,6 @@ module "firestarter_operations" {
 
   source                      = "./modules/firestarter-operations"
   namespaces                  = ["townsofitaly-stage"]
-  # oidc_provider_url           = flatten(concat(data.aws_eks_cluster.current.identity[*].oidc[0].issuer, [""]))[0]
   oidc_provider_url           = module.eks.cluster_oidc_issuer_url
   project                     = var.cluster_name
   environment                 = "stage"
@@ -63,7 +62,6 @@ module "firestarter_operations" {
   enable_uninstalled_releases = true
   enable_dumps                = true
 }
-
 
 # module "cluster_access" {
 #   source     = "./cluster-access"

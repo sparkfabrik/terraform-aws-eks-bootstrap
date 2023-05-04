@@ -13,8 +13,7 @@ locals {
 
 ## Create ECR repository
 resource "aws_ecr_repository" "repository" {
-  for_each = { for entry in local.customer_application_repositories : "${entry.app_name}-${entry.repo_name}" => entry }
-  
+  for_each = { for entry in local.customer_application_repositories : "${entry.app_name}-${entry.repo_name}" => entry } 
   name = each.key
 
   tags = {
