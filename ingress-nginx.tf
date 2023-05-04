@@ -7,7 +7,7 @@ locals {
     name                   = "ingress-nginx"
     repository             = "https://kubernetes.github.io/ingress-nginx"
     helm_release_name      = "ingress-nginx"
-    chart_version          = "v4.6.0"
+    chart_version          = "4.6.0"
     namespace              = "ingress-nginx"    
   }
 

@@ -237,9 +237,28 @@ variable "calico_helm_config" {
   description = "Calico Helm Chart Configuration"
 }
 
+variable "add_ecr_admin_iam_user" {
+  type = bool
+  default = false
+  description = "Create ECR Admin IAM User"
+}
+
+variable "add_ecr_admin_iam_user_name" {
+  type = string
+  default     = "ecr-admin-user"
+  description = "ECR Admin IAM User name"
+}
+
+variable "enable_firestarter_operations" {
+  type        = bool
+  default     = false
+  description = "Enable Firestarter Operations"
+}
+
 ## Customer application
 variable "customer_application" {
   type = map(object({
-    namespace = string
+    namespaces = list(string)
+    repositories = optional(list(string), [])
   }))
 }
