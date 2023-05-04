@@ -15,7 +15,7 @@ locals {
   )
 
   cert_manager_cluster_issuer_name         = "letsencrypt-${var.cluster_name}"
-  cert_manager_staging_cluster_issuer_name = "letsencrypt-${var.cluster_name}-staging"
+  cert_manager_staging_cluster_issuer_name = "letsencrypt-${var.cluster_name}-stage"
 
   cluster_issuer_manifests = split(
     "\n---\n",

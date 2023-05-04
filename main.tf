@@ -41,14 +41,29 @@ module "eks" {
 module "gitlab_runner" {
   count = var.enable_gitlab_runner ? 1 : 0
 
-  source = "github.com/sparkfabrik/terraform-aws-eks-gitlab-runner?ref=071e1cf"
+  source = "github.com/sparkfabrik/terraform-aws-eks-gitlab-runner?ref=3c07ae1"
 
   # The registration token is from https://gitlab.sparkfabrik.com/groups/toitaly-group/-/runners
   runner_registration_token   = var.gitlab_runner_registration_token
   runner_tags                 = join(",", var.gitlab_runner_tags)
   eks_cluster_oidc_issuer_url = module.eks.cluster_oidc_issuer_url
-  add_external_runner_user    = var.add_gitlab_runner_external_user
 }
+
+module "firestarter_operations" {
+  count = var.enable_firestarter_operations ? 1 : 0
+
+  source                      = "./modules/firestarter-operations"
+  namespaces                  = ["townsofitaly-stage"]
+  # oidc_provider_url           = flatten(concat(data.aws_eks_cluster.current.identity[*].oidc[0].issuer, [""]))[0]
+  oidc_provider_url           = module.eks.cluster_oidc_issuer_url
+  project                     = var.cluster_name
+  environment                 = "stage"
+  enable_seeds                = true
+  enable_operator_account     = true
+  enable_uninstalled_releases = true
+  enable_dumps                = true
+}
+
 
 # module "cluster_access" {
 #   source     = "./cluster-access"
