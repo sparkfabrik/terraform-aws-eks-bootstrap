@@ -32,3 +32,11 @@ output "ecr_admin_iam_user_key_secret" {
 output "cluster_certificate_authority_data" {
   value = module.eks.cluster_certificate_authority_data
 }
+
+output "cluster_endpoint" {
+  value = module.eks.cluster_endpoint
+}
+
+output "aws_eks_cluster_auth_token" {
+  value = data.aws_eks_cluster_auth.this.token
+}

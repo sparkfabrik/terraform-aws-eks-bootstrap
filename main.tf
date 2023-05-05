@@ -30,7 +30,7 @@ module "eks" {
 
   manage_aws_auth_configmap = true
   # map developer & admin ARNs as kubernetes Users
-  aws_auth_users = concat(local.admin_user_map_users, local.developer_user_map_users, var.cluster_map_users)
+  aws_auth_users = concat(local.admin_user_map_users, local.developer_user_map_users, var.cluster_access_map_users)
 
   tags = {
     Cluster = var.cluster_name
@@ -63,8 +63,9 @@ module "firestarter_operations" {
   enable_dumps                = true
 }
 
-# module "cluster_access" {
-#   source     = "./cluster-access"
-#   namespaces = keys(var.cluster_application)
-#   depends_on = [module.eks, kubernetes_namespace.application_namespace]
-# }
+module "cluster_access" {
+  source     = "./modules/cluster-access"
+  # namespaces = keys(var.cluster_application)
+  customer_application = var.customer_application
+  depends_on = [module.eks, kubernetes_namespace.customer_application]
+}
