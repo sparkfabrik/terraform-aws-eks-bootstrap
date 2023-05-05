@@ -86,7 +86,7 @@ variable "eks_managed_node_groups" {
 }
 
 ## Cluster access
-variable "cluster_map_users" {
+variable "cluster_access_map_users" {
   type = list(
     object({
       userarn  = string,
