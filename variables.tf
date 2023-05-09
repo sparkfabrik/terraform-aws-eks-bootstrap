@@ -202,6 +202,12 @@ variable "aws_ebs_csi_driver_helm_config" {
   description = "AWS EBS csi driver Helm Chart Configuration"
 }
 
+# variable "enable_ecr" {
+#   type        = bool
+#   default     = true
+#   description = "Enable ECR"
+# }
+
 variable "enable_gitlab_runner" {
   type        = bool
   default     = true
@@ -221,8 +227,8 @@ variable "gitlab_runner_tags" {
 
 variable "gitlab_runner_additional_policy_arns" {
   type        = list(string)
-  description = "The list of additional policies to be attached to the gitlab runner role."
   default     = []
+  description = "Gitlab Runner Additional Policy ARNs"
 }
 
 variable "enable_calico" {
