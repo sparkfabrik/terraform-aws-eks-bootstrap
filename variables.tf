@@ -202,12 +202,6 @@ variable "aws_ebs_csi_driver_helm_config" {
   description = "AWS EBS csi driver Helm Chart Configuration"
 }
 
-variable "enable_ecr" {
-  type        = bool
-  default     = true
-  description = "Enable ECR"
-}
-
 variable "enable_gitlab_runner" {
   type        = bool
   default     = true
@@ -225,6 +219,12 @@ variable "gitlab_runner_tags" {
   description = "Gitlab Runner Helm Chart Configuration"
 }
 
+variable "gitlab_runner_additional_policy_arns" {
+  type        = list(string)
+  description = "The list of additional policies to be attached to the gitlab runner role."
+  default     = []
+}
+
 variable "enable_calico" {
   type        = bool
   default     = false
@@ -235,18 +235,6 @@ variable "calico_helm_config" {
   type        = any
   default     = {}
   description = "Calico Helm Chart Configuration"
-}
-
-variable "add_ecr_admin_iam_user" {
-  type = bool
-  default = false
-  description = "Create ECR Admin IAM User"
-}
-
-variable "add_ecr_admin_iam_user_name" {
-  type = string
-  default     = "ecr-admin-user"
-  description = "ECR Admin IAM User name"
 }
 
 variable "enable_firestarter_operations" {
