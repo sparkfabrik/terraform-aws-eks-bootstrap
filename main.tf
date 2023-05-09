@@ -43,10 +43,10 @@ module "gitlab_runner" {
 
   source = "github.com/sparkfabrik/terraform-aws-eks-gitlab-runner?ref=3c07ae1"
 
-  # The registration token is from https://gitlab.sparkfabrik.com/groups/toitaly-group/-/runners
-  runner_registration_token   = var.gitlab_runner_registration_token
-  runner_tags                 = join(",", var.gitlab_runner_tags)
-  eks_cluster_oidc_issuer_url = module.eks.cluster_oidc_issuer_url
+  runner_registration_token     = var.gitlab_runner_registration_token
+  runner_tags                   = join(",", var.gitlab_runner_tags)
+  eks_cluster_oidc_issuer_url   = module.eks.cluster_oidc_issuer_url
+  runner_additional_policy_arns = var.gitlab_runner_additional_policy_arns
 }
 
 module "firestarter_operations" {
@@ -64,8 +64,7 @@ module "firestarter_operations" {
 }
 
 module "cluster_access" {
-  source     = "./modules/cluster-access"
-  # namespaces = keys(var.cluster_application)
+  source = "./modules/cluster-access"
   customer_application = var.customer_application
-  depends_on = [module.eks, kubernetes_namespace.customer_application]
+  depends_on           = [module.eks, kubernetes_namespace.customer_application]
 }

@@ -21,28 +21,3 @@ resource "aws_ecr_repository" "repository" {
     Application = each.key
   }
 }
-
-locals {
-  ecr_admin_policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser"
-}
-
-## Crate an IAM user with access to each ECR repository resource
-resource "aws_iam_user" "ecr_admin_iam_user" {
-  count = var.add_ecr_admin_iam_user ? 1 : 0
-  name  = var.add_ecr_admin_iam_user_name
-
-  tags = {
-    Cluster = var.cluster_name
-  }  
-}
-
-resource "aws_iam_access_key" "ecr_admin_iam_user" {
-  count = var.add_ecr_admin_iam_user ? 1 : 0
-  user  = aws_iam_user.ecr_admin_iam_user[0].name
-}
-
-resource "aws_iam_user_policy_attachment" "ecr_admin_iam_user" {
-  count      = var.add_ecr_admin_iam_user ? 1 : 0
-  user       = aws_iam_user.ecr_admin_iam_user[0].name
-  policy_arn = local.ecr_admin_policy_arn
-}
