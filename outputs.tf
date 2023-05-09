@@ -25,8 +25,3 @@ output "cluster_endpoint" {
 output "aws_eks_cluster_auth_token" {
   value = data.aws_eks_cluster_auth.this.token
 }
-
-## ECR
-output "customer_application_ecr_repository" {
-  value = { for repo in aws_ecr_repository.repository : repo.name => repo.repository_url }
-}
