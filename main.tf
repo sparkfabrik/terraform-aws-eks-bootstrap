@@ -41,7 +41,7 @@ module "eks" {
 module "gitlab_runner" {
   count = var.enable_gitlab_runner ? 1 : 0
 
-  source = "github.com/sparkfabrik/terraform-aws-eks-gitlab-runner?ref=3c07ae1"
+  source = "github.com/sparkfabrik/terraform-aws-eks-gitlab-runner?ref=4e020f8"
 
   runner_registration_token     = var.gitlab_runner_registration_token
   runner_tags                   = join(",", var.gitlab_runner_tags)
@@ -65,6 +65,7 @@ module "firestarter_operations" {
 
 module "cluster_access" {
   source = "./modules/cluster-access"
+  # namespaces = keys(var.cluster_application)
   customer_application = var.customer_application
   depends_on           = [module.eks, kubernetes_namespace.customer_application]
 }
