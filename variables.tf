@@ -215,7 +215,7 @@ variable "enable_gitlab_runner" {
 }
 
 variable "gitlab_runner_registration_token" {
-  type = string
+  type        = string
   description = "Gitlab Runner Registration Token"
 }
 
@@ -252,7 +252,47 @@ variable "enable_firestarter_operations" {
 ## Customer application
 variable "customer_application" {
   type = map(object({
-    namespaces = list(string)
+    namespaces   = list(string)
     repositories = optional(list(string), [])
   }))
+}
+
+## Velero
+variable "enable_velero" {
+  type        = bool
+  default     = false
+  description = "Enable Velero"
+}
+
+variable "velero_helm_config" {
+  type        = any
+  default     = {}
+  description = "Velero Helm Chart Configuration"
+}
+
+variable "velero_helm_values" {
+  type        = string
+  default     = ""
+  description = "Velero helm chart values"
+}
+
+variable "enable_velero_bucket_lifecycle" {
+  type        = bool
+  default     = true
+  description = "Enable Velero Bucket Lifecycle"
+}
+
+variable "velero_bucket_infrequently_access_days" {
+  type    = number
+  default = 30
+}
+
+variable "velero_bucket_glacier_days" {
+  type    = number
+  default = 60
+}
+
+variable "velero_bucket_expiration_days" {
+  type    = number
+  default = 90
 }

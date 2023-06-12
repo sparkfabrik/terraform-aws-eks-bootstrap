@@ -1,0 +1,33 @@
+credentials:
+  useSecret: false
+
+configuration:
+  provider: aws
+  backupStorageLocation:
+    name: default
+    bucket: ${bucket}
+
+serviceAccount:
+  server:
+    name: ${serviceaccount_name}
+    annotations:
+      eks.amazonaws.com/role-arn: ${role_arn}
+
+initContainers:
+- name: velero-plugin-for-aws
+  image: velero/velero-plugin-for-aws:${aws_container_version}
+  imagePullPolicy: IfNotPresent
+  volumeMounts:
+    - mountPath: /target
+      name: plugins
+
+schedules:
+  fullbackup:
+    disabled: false
+    schedule: "0 * * * *"
+    useOwnerReferencesInBackup: true
+    template:
+      defaultVolumesToRestic: false
+      ttl: 720h
+
+snapshotsEnabled: false
