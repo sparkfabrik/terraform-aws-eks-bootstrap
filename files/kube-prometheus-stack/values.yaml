@@ -1,0 +1,71 @@
+alertmanager:
+  alertmanagerSpec:
+    affinity: &prometheusAffinity
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: dedicated-for
+                  operator: In
+                  values:
+                    - kubePrometheus
+    tolerations: &prometheusTolerations
+      - key: "dedicated-for"
+        operator: "Equal"
+        value: "kubePrometheus"
+        effect: "NoSchedule"
+
+prometheusOperator:
+  resources:
+    requests:
+      cpu: 50m
+      memory: 100Mi
+  affinity: *prometheusAffinity
+  tolerations: *prometheusTolerations
+
+prometheus:
+  prometheusSpec:
+    resources:
+      requests:
+        cpu: 800m
+        memory: 1500Mi
+    ## How long to retain metrics
+    ##
+    retention: 5w
+    ## Maximum size of metrics
+    ##
+    retentionSize: "25GB"
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: "${storage_class_name}"
+          resources:
+            requests:
+              storage: 50Gi
+    affinity: *prometheusAffinity
+    tolerations: *prometheusTolerations
+
+prometheus-node-exporter:
+  tolerations: *prometheusTolerations
+  affinity: *prometheusAffinity
+  resources:
+    requests:
+      cpu: 3m
+      memory: 16Mi
+
+grafana:
+  resources:
+    requests:
+      cpu: 50m
+      memory: 100Mi
+  tolerations: *prometheusTolerations
+  affinity: *prometheusAffinity
+
+kube-state-metrics:
+  resources:
+    requests:
+      cpu: 2m
+      memory: 20Mi
+  affinity: *prometheusAffinity
+  tolerations: *prometheusTolerations
+        

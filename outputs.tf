@@ -25,3 +25,10 @@ output "cluster_endpoint" {
 output "aws_eks_cluster_auth_token" {
   value = data.aws_eks_cluster_auth.this.token
 }
+
+## Grafana password
+output "grafana_admin_password" {
+  sensitive = true
+  value = module.kube_prometheus_stack[0].grafana_admin_password
+}
+
