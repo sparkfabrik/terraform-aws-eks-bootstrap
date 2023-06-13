@@ -296,3 +296,20 @@ variable "velero_bucket_expiration_days" {
   type    = number
   default = 90
 }
+
+## Kube Prometheus Stack
+variable "enable_kube_prometheus_stack" {
+  type        = bool
+  default     = false
+  description = "Enable Kube Prometheus Stack"
+}
+
+variable "kube_prometheus_storage_zone" {
+  type    = list(string)
+  default = []
+}
+
+variable "kube_prometheus_grafana_hostname" {
+  type = string
+  default = ""
+}
