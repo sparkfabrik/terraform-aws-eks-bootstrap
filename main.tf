@@ -15,7 +15,8 @@ module "eks" {
 
   cluster_addons = {
     vpc-cni = {
-      most_recent = true
+      most_recent = false
+      preserve    = true
     }
   }
 
