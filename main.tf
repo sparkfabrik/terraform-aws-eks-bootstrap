@@ -14,7 +14,9 @@ module "eks" {
   subnet_ids = var.private_subnet_ids
 
   cluster_addons = {
-    vpc-cni = {}
+    vpc-cni = {
+      most_recent = true
+    }
   }
 
   # Enable OIDC Provider
