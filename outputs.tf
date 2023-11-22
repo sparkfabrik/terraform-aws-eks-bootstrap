@@ -10,6 +10,10 @@ output "ingress_nginx_zone_id" {
   value = var.enable_ingress_nginx ? data.aws_lb.ingress_nginx[0].zone_id : ""
 }
 
+output "customer_application_namespaces" {
+  value = local.eks_application_namespaces
+}
+
 output "customer_application_ecr_repository" {
   value = { for repo in aws_ecr_repository.repository : repo.name => repo.repository_url }
 }
@@ -29,6 +33,6 @@ output "aws_eks_cluster_auth_token" {
 ## Grafana password
 output "grafana_admin_password" {
   sensitive = true
-  value = module.kube_prometheus_stack[0].grafana_admin_password
+  value     = module.kube_prometheus_stack[0].grafana_admin_password
 }
 

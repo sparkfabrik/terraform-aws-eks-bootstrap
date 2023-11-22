@@ -1,9 +1,9 @@
 locals {
   # Node group default settings
   eks_managed_node_group_defaults = {
-    subnets   = var.private_subnet_ids
-    disk_size = 50
-    capacity_type  = "ON_DEMAND"
+    subnets       = var.private_subnet_ids
+    disk_size     = 50
+    capacity_type = "ON_DEMAND"
   }
 
   admin_user_map_users = [
@@ -23,4 +23,14 @@ locals {
       groups   = ["${var.project}-developers"]
     }
   ]
+
+  # Creaate customer application namespaces list.
+  # By convention, each namespace is suffixed with the customer application key.
+  eks_application_namespaces = distinct(flatten([
+    for k, app in var.customer_application : [
+      for namespace in app.namespaces : [
+        "${k}-${namespace}"
+      ]
+    ]
+  ]))
 }

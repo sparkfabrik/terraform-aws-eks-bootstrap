@@ -80,9 +80,17 @@ module "firestarter_operations" {
   enable_dumps                = true
 }
 
+# Application namespaces developer access
 module "cluster_access" {
-  source = "./modules/cluster-access"
-  # namespaces = keys(var.cluster_application)
-  customer_application = var.customer_application
-  depends_on           = [module.eks, kubernetes_namespace.customer_application]
+  source = "github.com/sparkfabrik/terraform-kubernetes-cluster-access?ref=0.1.0"
+
+  namespaces       = local.eks_application_namespaces
+  developer_groups = var.cluster_access_developer_groups
+  admin_groups     = var.cluster_access_admin_groups
+  k8s_labels = {
+    "managed-by" = "terraform"
+    "scope"      = "cluster-access"
+  }
+
+  depends_on = [module.eks, kubernetes_namespace.customer_application]
 }

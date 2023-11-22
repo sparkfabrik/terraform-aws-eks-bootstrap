@@ -35,6 +35,8 @@
 | <a name="input_calico_helm_config"></a> [calico\_helm\_config](#input\_calico\_helm\_config) | Calico Helm Chart Configuration | `any` | `{}` | no |
 | <a name="input_cert_manager_helm_config"></a> [cert\_manager\_helm\_config](#input\_cert\_manager\_helm\_config) | Cert Manager Helm Chart Configuration | `any` | `{}` | no |
 | <a name="input_cloudwatch_log_group_retention_in_days"></a> [cloudwatch\_log\_group\_retention\_in\_days](#input\_cloudwatch\_log\_group\_retention\_in\_days) | Number of days to retain log events. | `number` | `7` | no |
+| <a name="input_cluster_access_admin_groups"></a> [cluster\_access\_admin\_groups](#input\_cluster\_access\_admin\_groups) | The list of groups that will be mapped to the admin role in the application namespaces. | `list(string)` | n/a | yes |
+| <a name="input_cluster_access_developer_groups"></a> [cluster\_access\_developer\_groups](#input\_cluster\_access\_developer\_groups) | The list of groups that will be mapped to the developer role in the application namespaces. | `list(string)` | n/a | yes |
 | <a name="input_cluster_access_map_users"></a> [cluster\_access\_map\_users](#input\_cluster\_access\_map\_users) | # Cluster access | <pre>list(<br>    object({<br>      userarn  = string,<br>      username = string,<br>      groups   = list(string)<br>    })<br>  )</pre> | `[]` | no |
 | <a name="input_cluster_additional_addons"></a> [cluster\_additional\_addons](#input\_cluster\_additional\_addons) | Additional addons to install for EKS cluster. | `map(any)` | `{}` | no |
 | <a name="input_cluster_autoscaler_helm_config"></a> [cluster\_autoscaler\_helm\_config](#input\_cluster\_autoscaler\_helm\_config) | Cluster Autoscaler Helm Chart Configuration | `any` | `{}` | no |
@@ -89,6 +91,7 @@
 | <a name="output_cluster_certificate_authority_data"></a> [cluster\_certificate\_authority\_data](#output\_cluster\_certificate\_authority\_data) | n/a |
 | <a name="output_cluster_endpoint"></a> [cluster\_endpoint](#output\_cluster\_endpoint) | n/a |
 | <a name="output_customer_application_ecr_repository"></a> [customer\_application\_ecr\_repository](#output\_customer\_application\_ecr\_repository) | n/a |
+| <a name="output_customer_application_namespaces"></a> [customer\_application\_namespaces](#output\_customer\_application\_namespaces) | n/a |
 | <a name="output_grafana_admin_password"></a> [grafana\_admin\_password](#output\_grafana\_admin\_password) | # Grafana password |
 | <a name="output_ingress_nginx_dns_name"></a> [ingress\_nginx\_dns\_name](#output\_ingress\_nginx\_dns\_name) | n/a |
 | <a name="output_ingress_nginx_zone_id"></a> [ingress\_nginx\_zone\_id](#output\_ingress\_nginx\_zone\_id) | n/a |
@@ -134,7 +137,7 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_aws_ebs_csi_driver_identity"></a> [aws\_ebs\_csi\_driver\_identity](#module\_aws\_ebs\_csi\_driver\_identity) | terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc | ~> 4.2 |
-| <a name="module_cluster_access"></a> [cluster\_access](#module\_cluster\_access) | ./modules/cluster-access | n/a |
+| <a name="module_cluster_access"></a> [cluster\_access](#module\_cluster\_access) | github.com/sparkfabrik/terraform-kubernetes-cluster-access | 0.1.0 |
 | <a name="module_cluster_autoscaler_irsa_role"></a> [cluster\_autoscaler\_irsa\_role](#module\_cluster\_autoscaler\_irsa\_role) | terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks | ~> 5.17 |
 | <a name="module_eks"></a> [eks](#module\_eks) | terraform-aws-modules/eks/aws | ~> 19.13 |
 | <a name="module_firestarter_operations"></a> [firestarter\_operations](#module\_firestarter\_operations) | ./modules/firestarter-operations | n/a |
