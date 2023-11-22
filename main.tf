@@ -1,3 +1,14 @@
+locals {
+  additional_eks_addons = merge(
+    {},
+    var.cluster_enable_amazon_cloudwatch_observability_addon ? {
+      "amazon-cloudwatch-observability" = {
+        most_recent = true
+      }
+    } : {}
+  )
+}
+
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 19.13"
@@ -19,6 +30,7 @@ module "eks" {
         preserve    = true
       }
     },
+    local.additional_eks_addons,
     var.cluster_additional_addons
   )
 

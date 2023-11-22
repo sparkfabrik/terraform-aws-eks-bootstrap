@@ -71,6 +71,12 @@ variable "cloudwatch_log_group_retention_in_days" {
   default     = 7
 }
 
+variable "cluster_enable_amazon_cloudwatch_observability_addon" {
+  type        = bool
+  description = "Indicates whether to enable the Amazon CloudWatch Container Insights for Kubernetes."
+  default     = true
+}
+
 ## Cluster node group
 variable "eks_managed_node_groups" {
   type = any
