@@ -71,6 +71,7 @@ variable "cloudwatch_log_group_retention_in_days" {
   default     = 7
 }
 
+# https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/install-CloudWatch-Observability-EKS-addon.html
 variable "cluster_enable_amazon_cloudwatch_observability_addon" {
   type        = bool
   description = "Indicates whether to enable the Amazon CloudWatch Container Insights for Kubernetes."
