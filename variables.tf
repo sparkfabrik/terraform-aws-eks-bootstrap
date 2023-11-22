@@ -53,6 +53,18 @@ variable "cluster_enabled_log_types" {
   default     = []
 }
 
+variable "cluster_additional_addons" {
+  type        = map(any)
+  description = "Additional addons to install for EKS cluster."
+  default     = {}
+}
+
+variable "cluster_iam_role_additional_policies" {
+  type        = map(string)
+  description = "Additional policies to be added to the IAM role."
+  default     = {}
+}
+
 variable "cloudwatch_log_group_retention_in_days" {
   type        = number
   description = "Number of days to retain log events."
@@ -310,6 +322,6 @@ variable "kube_prometheus_storage_zone" {
 }
 
 variable "kube_prometheus_grafana_hostname" {
-  type = string
+  type    = string
   default = ""
 }
