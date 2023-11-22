@@ -7,7 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2023-11-22
+
+[Compare with previous version](https://github.com/sparkfabrik/terraform-aws-eks-bootstrap/compare/1.0.0...1.1.0)
+
 - refs #000: add link for CloudWatch Observability EKS addon.
+- refs platform/#2560: remove local module cluster access and use the one from [GitHub](https://github.com/sparkfabrik/terraform-kubernetes-cluster-access).
 
 ## [1.0.0] - 2023-11-22
 

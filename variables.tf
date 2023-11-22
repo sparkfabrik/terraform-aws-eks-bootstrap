@@ -116,6 +116,16 @@ variable "cluster_access_map_users" {
   default = []
 }
 
+variable "cluster_access_developer_groups" {
+  type        = list(string)
+  description = "The list of groups that will be mapped to the developer role in the application namespaces."
+}
+
+variable "cluster_access_admin_groups" {
+  type        = list(string)
+  description = "The list of groups that will be mapped to the admin role in the application namespaces."
+}
+
 variable "admin_users" {
   type = list(any)
 }

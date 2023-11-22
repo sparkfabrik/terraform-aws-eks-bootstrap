@@ -1,25 +1,12 @@
-# Creaate customer application namespace
-## By convention, each namespace is suffixed with the customer application key.
-
-locals {
-  customer_application_namespaces = distinct(flatten([
-    for k, app in var.customer_application : [
-      for namespace in app.namespaces : {
-        app_name = k
-        namespace_name = namespace
-      }
-  ]]))
-}
-
 resource "kubernetes_namespace" "customer_application" {
-  for_each = { for entry in local.customer_application_namespaces : "${entry.app_name}-${entry.namespace_name}" => entry }
+  for_each = toset(local.eks_application_namespaces)
 
   metadata {
     labels = {
-      name = each.key
+      name = each.value
     }
 
-    name = each.key
+    name = each.value
   }
 
   # Ignore the Firestarter package labels
