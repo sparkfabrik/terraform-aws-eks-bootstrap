@@ -1,4 +1,3 @@
-
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 19.13"
@@ -13,12 +12,17 @@ module "eks" {
   vpc_id     = var.vpc_id
   subnet_ids = var.private_subnet_ids
 
-  cluster_addons = {
-    vpc-cni = {
-      most_recent = true
-      preserve    = true
-    }
-  }
+  cluster_addons = merge(
+    {
+      vpc-cni = {
+        most_recent = true
+        preserve    = true
+      }
+    },
+    var.cluster_additional_addons
+  )
+
+  iam_role_additional_policies = var.cluster_iam_role_additional_policies
 
   # Enable OIDC Provider
   enable_irsa = true
