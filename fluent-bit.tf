@@ -27,7 +27,7 @@ data "aws_iam_policy" "CloudWatchAgentServerPolicy" {
 
 module "iam_assumable_role_with_oidc_for_fluentbit_aws" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-  version = "4.2.0"
+  version = "4.24.1"
 
   create_role = true
   role_name   = local.fluent_bit_role_name
