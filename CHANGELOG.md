@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.1] - 2023-11-29
+
+[Compare with previous version](https://github.com/sparkfabrik/terraform-aws-eks-bootstrap/compare/1.1.0...1.1.1)
+
+- refs platform/#2586: fix output for `grafana_admin_password` when `enable_kube_prometheus_stack` is `false`.
+
 ## [1.1.0] - 2023-11-22
 
 [Compare with previous version](https://github.com/sparkfabrik/terraform-aws-eks-bootstrap/compare/1.0.0...1.1.0)
