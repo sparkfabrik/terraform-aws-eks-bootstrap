@@ -1,10 +1,10 @@
-## General
+# General
 variable "project" {
   type        = string
   description = "Project name"
 }
 
-## VPC
+# VPC
 variable "vpc_id" {
   type = string
 }
@@ -17,7 +17,7 @@ variable "private_subnet_ids" {
   type = list(string)
 }
 
-## Cluster definition
+# Cluster definition
 variable "cluster_name" {
   type        = string
   description = "The name of the EKS cluster"
@@ -78,7 +78,17 @@ variable "cluster_enable_amazon_cloudwatch_observability_addon" {
   default     = true
 }
 
-## Cluster node group
+# https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Agent-Configuration-File-Details.html#CloudWatch-Agent-Configuration-File-Complete-Example
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eks_addon#example-add-on-usage-with-custom-configuration_values
+# To get the addon configuration, run the following command:
+# aws eks describe-addon-configuration --addon-name amazon-cloudwatch-observability --addon-version v1.1.1-eksbuild.1
+variable "enhanced_container_insights_enabled" {
+  type        = bool
+  description = "Indicates whether to enable the enhanced CloudWatch Container Insights for Kubernetes."
+  default     = false
+}
+
+# Cluster node group
 variable "eks_managed_node_groups" {
   type = any
   default = {
@@ -90,13 +100,6 @@ variable "eks_managed_node_groups" {
       labels = {
         Pool = "core"
       }
-      # taints = {
-      #   dedicated = {
-      #     key    = "dedicated"
-      #     value  = "gpuGroup"
-      #     effect = "NO_SCHEDULE"
-      #   }
-      # }
       tags = {
         Pool = "core"
       }
@@ -104,7 +107,7 @@ variable "eks_managed_node_groups" {
   }
 }
 
-## Cluster access
+# Cluster access
 variable "cluster_access_map_users" {
   type = list(
     object({
@@ -134,7 +137,7 @@ variable "developer_users" {
   type = list(any)
 }
 
-## Cluster applications
+# Cluster applications
 variable "enable_metric_server" {
   type        = bool
   description = "Enable Metric Server"
@@ -231,12 +234,6 @@ variable "aws_ebs_csi_driver_helm_config" {
   description = "AWS EBS csi driver Helm Chart Configuration"
 }
 
-# variable "enable_ecr" {
-#   type        = bool
-#   default     = true
-#   description = "Enable ECR"
-# }
-
 variable "enable_gitlab_runner" {
   type        = bool
   default     = true
@@ -278,7 +275,7 @@ variable "enable_firestarter_operations" {
   description = "Enable Firestarter Operations"
 }
 
-## Customer application
+# Customer application
 variable "customer_application" {
   type = map(object({
     namespaces   = list(string)
@@ -286,7 +283,7 @@ variable "customer_application" {
   }))
 }
 
-## Velero
+# Velero
 variable "enable_velero" {
   type        = bool
   default     = false
@@ -326,7 +323,7 @@ variable "velero_bucket_expiration_days" {
   default = 90
 }
 
-## Kube Prometheus Stack
+# Kube Prometheus Stack
 variable "enable_kube_prometheus_stack" {
   type        = bool
   default     = false

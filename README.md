@@ -37,7 +37,7 @@
 | <a name="input_cloudwatch_log_group_retention_in_days"></a> [cloudwatch\_log\_group\_retention\_in\_days](#input\_cloudwatch\_log\_group\_retention\_in\_days) | Number of days to retain log events. | `number` | `7` | no |
 | <a name="input_cluster_access_admin_groups"></a> [cluster\_access\_admin\_groups](#input\_cluster\_access\_admin\_groups) | The list of groups that will be mapped to the admin role in the application namespaces. | `list(string)` | n/a | yes |
 | <a name="input_cluster_access_developer_groups"></a> [cluster\_access\_developer\_groups](#input\_cluster\_access\_developer\_groups) | The list of groups that will be mapped to the developer role in the application namespaces. | `list(string)` | n/a | yes |
-| <a name="input_cluster_access_map_users"></a> [cluster\_access\_map\_users](#input\_cluster\_access\_map\_users) | # Cluster access | <pre>list(<br>    object({<br>      userarn  = string,<br>      username = string,<br>      groups   = list(string)<br>    })<br>  )</pre> | `[]` | no |
+| <a name="input_cluster_access_map_users"></a> [cluster\_access\_map\_users](#input\_cluster\_access\_map\_users) | Cluster access | <pre>list(<br>    object({<br>      userarn  = string,<br>      username = string,<br>      groups   = list(string)<br>    })<br>  )</pre> | `[]` | no |
 | <a name="input_cluster_additional_addons"></a> [cluster\_additional\_addons](#input\_cluster\_additional\_addons) | Additional addons to install for EKS cluster. | `map(any)` | `{}` | no |
 | <a name="input_cluster_autoscaler_helm_config"></a> [cluster\_autoscaler\_helm\_config](#input\_cluster\_autoscaler\_helm\_config) | Cluster Autoscaler Helm Chart Configuration | `any` | `{}` | no |
 | <a name="input_cluster_enable_amazon_cloudwatch_observability_addon"></a> [cluster\_enable\_amazon\_cloudwatch\_observability\_addon](#input\_cluster\_enable\_amazon\_cloudwatch\_observability\_addon) | Indicates whether to enable the Amazon CloudWatch Container Insights for Kubernetes. | `bool` | `true` | no |
@@ -48,9 +48,9 @@
 | <a name="input_cluster_iam_role_additional_policies"></a> [cluster\_iam\_role\_additional\_policies](#input\_cluster\_iam\_role\_additional\_policies) | Additional policies to be added to the IAM role. | `map(string)` | `{}` | no |
 | <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | The name of the EKS cluster | `string` | n/a | yes |
 | <a name="input_cluster_version"></a> [cluster\_version](#input\_cluster\_version) | The Kubernetes version to use for the EKS cluster. | `string` | `"1.24"` | no |
-| <a name="input_customer_application"></a> [customer\_application](#input\_customer\_application) | # Customer application | <pre>map(object({<br>    namespaces   = list(string)<br>    repositories = optional(list(string), [])<br>  }))</pre> | n/a | yes |
+| <a name="input_customer_application"></a> [customer\_application](#input\_customer\_application) | Customer application | <pre>map(object({<br>    namespaces   = list(string)<br>    repositories = optional(list(string), [])<br>  }))</pre> | n/a | yes |
 | <a name="input_developer_users"></a> [developer\_users](#input\_developer\_users) | n/a | `list(any)` | n/a | yes |
-| <a name="input_eks_managed_node_groups"></a> [eks\_managed\_node\_groups](#input\_eks\_managed\_node\_groups) | # Cluster node group | `any` | <pre>{<br>  "core_pool": {<br>    "desired_size": 2,<br>    "instance_types": [<br>      "t3.medium"<br>    ],<br>    "labels": {<br>      "Pool": "core"<br>    },<br>    "max_size": 4,<br>    "min_size": 1,<br>    "tags": {<br>      "Pool": "core"<br>    }<br>  }<br>}</pre> | no |
+| <a name="input_eks_managed_node_groups"></a> [eks\_managed\_node\_groups](#input\_eks\_managed\_node\_groups) | Cluster node group | `any` | <pre>{<br>  "core_pool": {<br>    "desired_size": 2,<br>    "instance_types": [<br>      "t3.medium"<br>    ],<br>    "labels": {<br>      "Pool": "core"<br>    },<br>    "max_size": 4,<br>    "min_size": 1,<br>    "tags": {<br>      "Pool": "core"<br>    }<br>  }<br>}</pre> | no |
 | <a name="input_enable_aws_alb_controller"></a> [enable\_aws\_alb\_controller](#input\_enable\_aws\_alb\_controller) | Enable AWS Load Balancer Controller | `bool` | `false` | no |
 | <a name="input_enable_aws_ebs_csi_driver"></a> [enable\_aws\_ebs\_csi\_driver](#input\_enable\_aws\_ebs\_csi\_driver) | Enable AWS EBS CSI Driver | `bool` | `true` | no |
 | <a name="input_enable_aws_node_termination_handler"></a> [enable\_aws\_node\_termination\_handler](#input\_enable\_aws\_node\_termination\_handler) | Enable AWS Node Termination Handler | `bool` | `true` | no |
@@ -64,6 +64,7 @@
 | <a name="input_enable_metric_server"></a> [enable\_metric\_server](#input\_enable\_metric\_server) | Enable Metric Server | `bool` | `true` | no |
 | <a name="input_enable_velero"></a> [enable\_velero](#input\_enable\_velero) | Enable Velero | `bool` | `false` | no |
 | <a name="input_enable_velero_bucket_lifecycle"></a> [enable\_velero\_bucket\_lifecycle](#input\_enable\_velero\_bucket\_lifecycle) | Enable Velero Bucket Lifecycle | `bool` | `true` | no |
+| <a name="input_enhanced_container_insights_enabled"></a> [enhanced\_container\_insights\_enabled](#input\_enhanced\_container\_insights\_enabled) | Indicates whether to enable the enhanced CloudWatch Container Insights for Kubernetes. | `bool` | `false` | no |
 | <a name="input_gitlab_runner_additional_policy_arns"></a> [gitlab\_runner\_additional\_policy\_arns](#input\_gitlab\_runner\_additional\_policy\_arns) | Gitlab Runner Additional Policy ARNs | `list(string)` | `[]` | no |
 | <a name="input_gitlab_runner_registration_token"></a> [gitlab\_runner\_registration\_token](#input\_gitlab\_runner\_registration\_token) | Gitlab Runner Registration Token | `string` | n/a | yes |
 | <a name="input_gitlab_runner_tags"></a> [gitlab\_runner\_tags](#input\_gitlab\_runner\_tags) | Gitlab Runner Helm Chart Configuration | `list(string)` | <pre>[<br>  "aws"<br>]</pre> | no |
@@ -81,7 +82,7 @@
 | <a name="input_velero_helm_config"></a> [velero\_helm\_config](#input\_velero\_helm\_config) | Velero Helm Chart Configuration | `any` | `{}` | no |
 | <a name="input_velero_helm_values"></a> [velero\_helm\_values](#input\_velero\_helm\_values) | Velero helm chart values | `string` | `""` | no |
 | <a name="input_vpc_cidr_block"></a> [vpc\_cidr\_block](#input\_vpc\_cidr\_block) | n/a | `string` | n/a | yes |
-| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | # VPC | `string` | n/a | yes |
+| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | VPC | `string` | n/a | yes |
 ## Outputs
 
 | Name | Description |
