@@ -5,7 +5,7 @@ locals {
       "amazon-cloudwatch-observability" = {
         most_recent = true
         configuration_values = jsonencode(
-          { "logs" : { "metrics_collected" : { "kubernetes" : { "enhanced_container_insights" : var.enhanced_container_insights_enabled } } } }
+          { "agent" : { "config" : { "logs" : { "metrics_collected" : { "kubernetes" : { "enhanced_container_insights" : var.enhanced_container_insights_enabled } } } } } }
         )
       }
     } : {}
