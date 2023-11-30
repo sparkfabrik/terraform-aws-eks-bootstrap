@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2023-11-30
+
+[Compare with previous version](https://github.com/sparkfabrik/terraform-aws-eks-bootstrap/compare/1.1.1...1.2.0)
+
+- refs platform/#2586: add `enhanced_container_insights_enabled` variable to enable/disable enhanced container insights for CloudWatch. Remember that this feature only allows to use **the last 3 hours of collected metrics**. You can find more information about limitations [here](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch-metrics-insights-limits.html).
+
 ## [1.1.1] - 2023-11-29
 
 [Compare with previous version](https://github.com/sparkfabrik/terraform-aws-eks-bootstrap/compare/1.1.0...1.1.1)

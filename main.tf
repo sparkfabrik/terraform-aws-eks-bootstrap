@@ -4,6 +4,9 @@ locals {
     var.cluster_enable_amazon_cloudwatch_observability_addon ? {
       "amazon-cloudwatch-observability" = {
         most_recent = true
+        configuration_values = jsonencode(
+          { "logs" : { "metrics_collected" : { "kubernetes" : { "enhanced_container_insights" : var.enhanced_container_insights_enabled } } } }
+        )
       }
     } : {}
   )
