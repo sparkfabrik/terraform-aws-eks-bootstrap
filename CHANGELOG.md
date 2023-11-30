@@ -7,9 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.0] - 2023-11-30
+
+[Compare with previous version](https://github.com/sparkfabrik/terraform-aws-eks-bootstrap/compare/1.2.0...2.0.0)
+
+### ⚠️ Breaking changes ⚠️
+
+**ATTENTION:** before applying these changes you must follow the [upgrading instructions](https://github.com/sparkfabrik/terraform-sparkfabrik-prometheus-stack#upgrading-from-2xy-to-300) for the Prometheus Stack module.
+
+### Changed
+
+- refs platform/#2586: update Prometheus Stack module to version `3.0.0` to support multiple values configuration for the Kube Prometheus Stack.
+
 ## [1.2.0] - 2023-11-30
 
 [Compare with previous version](https://github.com/sparkfabrik/terraform-aws-eks-bootstrap/compare/1.1.1...1.2.0)
+
+### Added
 
 - refs platform/#2586: add `enhanced_container_insights_enabled` variable to enable/disable enhanced container insights for CloudWatch. Remember that this feature only allows to use **the last 3 hours of collected metrics**. You can find more information about limitations [here](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch-metrics-insights-limits.html).
 
@@ -17,13 +31,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [Compare with previous version](https://github.com/sparkfabrik/terraform-aws-eks-bootstrap/compare/1.1.0...1.1.1)
 
+### Changed
+
 - refs platform/#2586: fix output for `grafana_admin_password` when `enable_kube_prometheus_stack` is `false`.
 
 ## [1.1.0] - 2023-11-22
 
 [Compare with previous version](https://github.com/sparkfabrik/terraform-aws-eks-bootstrap/compare/1.0.0...1.1.0)
 
+### Added
+
 - refs #000: add link for CloudWatch Observability EKS addon.
+
+### Changed
+
 - refs platform/#2560: remove local module cluster access and use the one from [GitHub](https://github.com/sparkfabrik/terraform-kubernetes-cluster-access).
 
 ## [1.0.0] - 2023-11-22

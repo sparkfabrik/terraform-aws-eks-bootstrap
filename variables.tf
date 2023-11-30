@@ -330,6 +330,12 @@ variable "enable_kube_prometheus_stack" {
   description = "Enable Kube Prometheus Stack"
 }
 
+variable "prometheus_stack_additional_values" {
+  type        = list(string)
+  description = "Additional values for Kube Prometheus Stack"
+  default     = []
+}
+
 variable "kube_prometheus_storage_zone" {
   type    = list(string)
   default = []
