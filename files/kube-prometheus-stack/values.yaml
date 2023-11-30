@@ -1,27 +1,8 @@
-alertmanager:
-  alertmanagerSpec:
-    affinity: &prometheusAffinity
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-            - matchExpressions:
-                - key: dedicated-for
-                  operator: In
-                  values:
-                    - kubePrometheus
-    tolerations: &prometheusTolerations
-      - key: "dedicated-for"
-        operator: "Equal"
-        value: "kubePrometheus"
-        effect: "NoSchedule"
-
 prometheusOperator:
   resources:
     requests:
       cpu: 50m
       memory: 100Mi
-  affinity: *prometheusAffinity
-  tolerations: *prometheusTolerations
 
 prometheus:
   prometheusSpec:
@@ -42,12 +23,8 @@ prometheus:
           resources:
             requests:
               storage: 50Gi
-    affinity: *prometheusAffinity
-    tolerations: *prometheusTolerations
 
 prometheus-node-exporter:
-  tolerations: *prometheusTolerations
-  affinity: *prometheusAffinity
   resources:
     requests:
       cpu: 3m
@@ -58,14 +35,9 @@ grafana:
     requests:
       cpu: 50m
       memory: 100Mi
-  tolerations: *prometheusTolerations
-  affinity: *prometheusAffinity
 
 kube-state-metrics:
   resources:
     requests:
       cpu: 2m
       memory: 20Mi
-  affinity: *prometheusAffinity
-  tolerations: *prometheusTolerations
-        

@@ -1,6 +1,6 @@
-# terraform-aws-eks-bootstrap
+# Terraform aws eks bootstrap
 
-
+Bootstrap module for AWS EKS cluster.
 
 <!-- BEGIN_TF_DOCS -->
 ## Providers
@@ -76,6 +76,7 @@
 | <a name="input_metric_server_helm_config"></a> [metric\_server\_helm\_config](#input\_metric\_server\_helm\_config) | Metric Server Helm Chart Configuration | `any` | `{}` | no |
 | <a name="input_private_subnet_ids"></a> [private\_subnet\_ids](#input\_private\_subnet\_ids) | n/a | `list(string)` | n/a | yes |
 | <a name="input_project"></a> [project](#input\_project) | Project name | `string` | n/a | yes |
+| <a name="input_prometheus_stack_additional_values"></a> [prometheus\_stack\_additional\_values](#input\_prometheus\_stack\_additional\_values) | Additional values for Kube Prometheus Stack | `list(string)` | `[]` | no |
 | <a name="input_velero_bucket_expiration_days"></a> [velero\_bucket\_expiration\_days](#input\_velero\_bucket\_expiration\_days) | n/a | `number` | `90` | no |
 | <a name="input_velero_bucket_glacier_days"></a> [velero\_bucket\_glacier\_days](#input\_velero\_bucket\_glacier\_days) | n/a | `number` | `60` | no |
 | <a name="input_velero_bucket_infrequently_access_days"></a> [velero\_bucket\_infrequently\_access\_days](#input\_velero\_bucket\_infrequently\_access\_days) | n/a | `number` | `30` | no |
@@ -143,7 +144,7 @@
 | <a name="module_eks"></a> [eks](#module\_eks) | terraform-aws-modules/eks/aws | ~> 19.13 |
 | <a name="module_firestarter_operations"></a> [firestarter\_operations](#module\_firestarter\_operations) | ./modules/firestarter-operations | n/a |
 | <a name="module_gitlab_runner"></a> [gitlab\_runner](#module\_gitlab\_runner) | github.com/sparkfabrik/terraform-aws-eks-gitlab-runner | 4e020f8 |
-| <a name="module_kube_prometheus_stack"></a> [kube\_prometheus\_stack](#module\_kube\_prometheus\_stack) | github.com/sparkfabrik/terraform-sparkfabrik-prometheus-stack | cd54564 |
+| <a name="module_kube_prometheus_stack"></a> [kube\_prometheus\_stack](#module\_kube\_prometheus\_stack) | github.com/sparkfabrik/terraform-sparkfabrik-prometheus-stack | 3.0.0 |
 | <a name="module_load_balancer_controller_irsa_role"></a> [load\_balancer\_controller\_irsa\_role](#module\_load\_balancer\_controller\_irsa\_role) | terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks | ~> 5.17 |
 | <a name="module_node_termination_handler_irsa_role"></a> [node\_termination\_handler\_irsa\_role](#module\_node\_termination\_handler\_irsa\_role) | terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks | ~> 5.17 |
 | <a name="module_velero_irsa_role"></a> [velero\_irsa\_role](#module\_velero\_irsa\_role) | terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks | ~> 5.20 |
