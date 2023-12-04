@@ -85,7 +85,7 @@ variable "cluster_enable_amazon_cloudwatch_observability_addon" {
 variable "enhanced_container_insights_enabled" {
   type        = bool
   description = "Indicates whether to enable the enhanced CloudWatch Container Insights for Kubernetes."
-  default     = false
+  default     = true
 }
 
 # Cluster node group

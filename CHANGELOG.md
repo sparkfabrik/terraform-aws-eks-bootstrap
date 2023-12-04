@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.0] - 2023-12-04
+
+[Compare with previous version](https://github.com/sparkfabrik/terraform-aws-eks-bootstrap/compare/2.0.0...2.1.0)
+
+### Changed
+
+- refs platform/#2586: the `enhanced_container_insights_enabled` variable is now true by default.
+
 ## [2.0.0] - 2023-11-30
 
 [Compare with previous version](https://github.com/sparkfabrik/terraform-aws-eks-bootstrap/compare/1.2.0...2.0.0)

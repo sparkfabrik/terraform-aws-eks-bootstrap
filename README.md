@@ -64,7 +64,7 @@ Bootstrap module for AWS EKS cluster.
 | <a name="input_enable_metric_server"></a> [enable\_metric\_server](#input\_enable\_metric\_server) | Enable Metric Server | `bool` | `true` | no |
 | <a name="input_enable_velero"></a> [enable\_velero](#input\_enable\_velero) | Enable Velero | `bool` | `false` | no |
 | <a name="input_enable_velero_bucket_lifecycle"></a> [enable\_velero\_bucket\_lifecycle](#input\_enable\_velero\_bucket\_lifecycle) | Enable Velero Bucket Lifecycle | `bool` | `true` | no |
-| <a name="input_enhanced_container_insights_enabled"></a> [enhanced\_container\_insights\_enabled](#input\_enhanced\_container\_insights\_enabled) | Indicates whether to enable the enhanced CloudWatch Container Insights for Kubernetes. | `bool` | `false` | no |
+| <a name="input_enhanced_container_insights_enabled"></a> [enhanced\_container\_insights\_enabled](#input\_enhanced\_container\_insights\_enabled) | Indicates whether to enable the enhanced CloudWatch Container Insights for Kubernetes. | `bool` | `true` | no |
 | <a name="input_gitlab_runner_additional_policy_arns"></a> [gitlab\_runner\_additional\_policy\_arns](#input\_gitlab\_runner\_additional\_policy\_arns) | Gitlab Runner Additional Policy ARNs | `list(string)` | `[]` | no |
 | <a name="input_gitlab_runner_registration_token"></a> [gitlab\_runner\_registration\_token](#input\_gitlab\_runner\_registration\_token) | Gitlab Runner Registration Token | `string` | n/a | yes |
 | <a name="input_gitlab_runner_tags"></a> [gitlab\_runner\_tags](#input\_gitlab\_runner\_tags) | Gitlab Runner Helm Chart Configuration | `list(string)` | <pre>[<br>  "aws"<br>]</pre> | no |
