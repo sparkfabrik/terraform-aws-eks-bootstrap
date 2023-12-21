@@ -6,11 +6,8 @@
 controller:
   # Will add custom configuration options to Nginx https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/
   config:
-    body-size: "0"
-    hsts-include-subdomains: "false"
     proxy-buffers: "4 256k"
     proxy-busy-buffers-size: "256k"
-    ssl-redirect: "true"
 
   metrics:
     enabled: true
@@ -29,3 +26,6 @@ controller:
       service.beta.kubernetes.io/aws-load-balancer-type: nlb    
       proxy-real-ip-cidr: ${vpc_cidr_block}
       service.beta.kubernetes.io/aws-load-balancer-additional-resource-tags: "name=${aws_load_balancer_name}"
+
+  defaultBackend:
+    enabled: false

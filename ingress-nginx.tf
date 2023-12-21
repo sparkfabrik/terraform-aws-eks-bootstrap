@@ -26,7 +26,7 @@ locals {
 }
 
 module "ingress_nginx" {
-  source            = "github.com/sparkfabrik/terraform-helm-ingress-nginx?ref=0.3.0"
+  source            = "github.com/sparkfabrik/terraform-helm-ingress-nginx?ref=0.4.0"
   chart_version     = local.ingress_nginx_helm_config.chart_version
   namespace         = local.ingress_nginx_helm_config.namespace
   helm_release_name = local.ingress_nginx_helm_config.helm_release_name
