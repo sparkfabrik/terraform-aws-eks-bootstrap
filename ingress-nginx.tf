@@ -41,5 +41,5 @@ data "aws_lb" "ingress_nginx" {
     "name" = local.ingress_nginx_nlb_name
   }
 
-  depends_on = [ingress_nginx.helm_release.this]
+  depends_on = [module.ingress_nginx]
 }
