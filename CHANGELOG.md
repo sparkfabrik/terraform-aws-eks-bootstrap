@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.0] - 2023-12-21
+
+[Compare with previous version](https://github.com/sparkfabrik/terraform-aws-eks-bootstrap/compare/2.1.0...3.0.0)
+
+### ⚠️ Breaking changes ⚠️
+
+**ATTENTION:** read the [upgrading instructions](https://github.com/sparkfabrik/terraform-aws-eks-bootstrap/blob/3.0.0/UPGRADING.md#upgrading-from-2xy-to-300).
+
+### Changed
+
+- refs platform/#2564: update nginx-ingress controller installation module, using the module hosted on [GitHub](https://github.com/sparkfabrik/terraform-helm-ingress-nginx/).
+
 ## [2.1.0] - 2023-12-04
 
 [Compare with previous version](https://github.com/sparkfabrik/terraform-aws-eks-bootstrap/compare/2.0.0...2.1.0)

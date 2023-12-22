@@ -1,42 +1,23 @@
 ## nginx configuration
 ## Ref: https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/index.md
 ##
-## AWS specific deployment: https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.48.1/deploy/static/provider/aws/deploy.yaml
-## Available at https://github.com/kubernetes/ingress-nginx/blob/master/charts/ingress-nginx/values.yaml
+## AWS specific deployment: https://github.com/kubernetes/ingress-nginx/blob/helm-chart-4.8.3/deploy/static/provider/aws/deploy.yaml
+## Available at https://github.com/kubernetes/ingress-nginx/blob/helm-chart-4.8.3/charts/ingress-nginx/values.yaml
 controller:
   # Will add custom configuration options to Nginx https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/
   config:
-    ssl-redirect: "true"
-    proxy-body-size: "0"
-    body-size: "0"
-    proxy-buffer-size: "128k"
     proxy-buffers: "4 256k"
     proxy-busy-buffers-size: "256k"
-    proxy-connect-timeout: "15"
-    proxy-read-timeout: "600"
-    proxy-send-imeout: "600"
-    hsts-include-subdomains: "false"
-    server-name-hash-bucket-size: "256"
 
   metrics:
     enabled: true
 
-    serviceMonitor:
-      enabled: false
-
   # Mutually exclusive with keda autoscaling
   autoscaling:
-    enabled: true
     minReplicas: 2
     maxReplicas: 4
-    targetCPUUtilizationPercentage: 80
-    targetMemoryUtilizationPercentage: 80
 
   service:
-    ## Set external traffic policy to: "Local" to preserve source IP on
-    ## providers supporting it
-    ## Ref: https://kubernetes.io/docs/tutorials/services/source-ip/#source-ip-for-services-with-typeloadbalancer
-    externalTrafficPolicy: "Local"
     annotations:
       service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: "60"
       service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
@@ -45,6 +26,6 @@ controller:
       service.beta.kubernetes.io/aws-load-balancer-type: nlb    
       proxy-real-ip-cidr: ${vpc_cidr_block}
       service.beta.kubernetes.io/aws-load-balancer-additional-resource-tags: "name=${aws_load_balancer_name}"
-## Enable RBAC as per https://github.com/kubernetes/ingress/tree/master/examples/rbac/nginx and https://github.com/kubernetes/ingress/issues/266
-rbac:
-  create: true
+
+  defaultBackend:
+    enabled: false
