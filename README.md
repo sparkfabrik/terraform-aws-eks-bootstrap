@@ -2,6 +2,28 @@
 
 Bootstrap module for AWS EKS cluster.
 
+## Known Issues
+
+Due to issue on [amazon-cloudwatch-observability](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Container-Insights-setup-EKS-addon.html) EKS addon, the fluent-bit and the CloudWatch Agent are not deployed on tainted nodes. 
+
+The feature is in "Proposed" state https://github.com/aws/containers-roadmap/issues/2195.
+
+Ultil the feature is released, you must manually add tolerations in the AmazonCloudWatchAgent CRD and fluent-bit daemonset resources.
+
+Edit:
+- kubectl edit daemonset.apps/fluent-bit -n amazon-cloudwatch
+- kubectl edit AmazonCloudWatchAgent -n amazon-cloudwatch
+
+and add tolerations, eg:
+
+```yaml
+      tolerations:
+      - effect: NoSchedule
+        key: stable-pool-performance
+        operator: Equal
+        value: high
+```
+
 <!-- BEGIN_TF_DOCS -->
 ## Providers
 
