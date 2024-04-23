@@ -4,25 +4,22 @@ Bootstrap module for AWS EKS cluster.
 
 ## Known Issues
 
-Due to issue on [amazon-cloudwatch-observability](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Container-Insights-setup-EKS-addon.html) EKS addon, the fluent-bit and the CloudWatch Agent are not deployed on tainted nodes. 
+Due to issue on [amazon-cloudwatch-observability](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Container-Insights-setup-EKS-addon.html) EKS addon, the fluent-bit and the CloudWatch Agent are not deployed on tainted nodes.
 
 The feature is in "Proposed" state https://github.com/aws/containers-roadmap/issues/2195.
 
 Ultil the feature is released, you must manually add tolerations in the AmazonCloudWatchAgent CRD and fluent-bit daemonset resources.
 
-Edit:
-- kubectl edit daemonset.apps/fluent-bit -n amazon-cloudwatch
-- kubectl edit AmazonCloudWatchAgent -n amazon-cloudwatch
+You can find the patch files in the `eks-add-ons-patches` directory. You can apply the patches using the `kubectl` as follows:
 
-and add tolerations, eg:
-
-```yaml
-      tolerations:
-      - effect: NoSchedule
-        key: stable-pool-performance
-        operator: Equal
-        value: high
+```bash
+# Patch the FluentBit DaemonSet
+kubectl -n amazon-cloudwatch patch daemonset fluent-bit --type merge --patch-file eks-add-ons-patches/fluent-bit.yaml
+# Patch the AmazonCloudWatchAgent resource (which produces the cloudwatch-agent daemonset)
+kubectl -n amazon-cloudwatch patch AmazonCloudWatchAgent cloudwatch-agent --type merge --patch-file eks-add-ons-patches/cloudwatch-agent.yaml
 ```
+
+Remember to change the `tolerations` patches according to your node groups.
 
 <!-- BEGIN_TF_DOCS -->
 ## Providers
