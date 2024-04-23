@@ -29,7 +29,7 @@ Remember to change the `tolerations` patches according to your node groups.
 | <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.63 |
 | <a name="provider_helm"></a> [helm](#provider\_helm) | >= 2.9 |
 | <a name="provider_kubectl"></a> [kubectl](#provider\_kubectl) | >= 1.14 |
-| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | >= 2.19 |
+| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | >= 2.26 |
 | <a name="provider_random"></a> [random](#provider\_random) | >= 3.5 |
 | <a name="provider_template"></a> [template](#provider\_template) | >= 2.2 |
 ## Requirements
@@ -40,7 +40,7 @@ Remember to change the `tolerations` patches according to your node groups.
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.63 |
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | >= 2.9 |
 | <a name="requirement_kubectl"></a> [kubectl](#requirement\_kubectl) | >= 1.14 |
-| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >= 2.19 |
+| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >= 2.26 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | >= 3.5 |
 | <a name="requirement_template"></a> [template](#requirement\_template) | >= 2.2 |
 ## Inputs
@@ -161,6 +161,7 @@ Remember to change the `tolerations` patches according to your node groups.
 | <a name="module_eks"></a> [eks](#module\_eks) | terraform-aws-modules/eks/aws | ~> 19.13 |
 | <a name="module_firestarter_operations"></a> [firestarter\_operations](#module\_firestarter\_operations) | ./modules/firestarter-operations | n/a |
 | <a name="module_gitlab_runner"></a> [gitlab\_runner](#module\_gitlab\_runner) | github.com/sparkfabrik/terraform-aws-eks-gitlab-runner | 4e020f8 |
+| <a name="module_iam_assumable_role_with_oidc_for_eks_addons"></a> [iam\_assumable\_role\_with\_oidc\_for\_eks\_addons](#module\_iam\_assumable\_role\_with\_oidc\_for\_eks\_addons) | terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc | ~> 5.0 |
 | <a name="module_ingress_nginx"></a> [ingress\_nginx](#module\_ingress\_nginx) | github.com/sparkfabrik/terraform-helm-ingress-nginx | 0.4.0 |
 | <a name="module_kube_prometheus_stack"></a> [kube\_prometheus\_stack](#module\_kube\_prometheus\_stack) | github.com/sparkfabrik/terraform-sparkfabrik-prometheus-stack | 3.0.0 |
 | <a name="module_load_balancer_controller_irsa_role"></a> [load\_balancer\_controller\_irsa\_role](#module\_load\_balancer\_controller\_irsa\_role) | terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks | ~> 5.17 |
