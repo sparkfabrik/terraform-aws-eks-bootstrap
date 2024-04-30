@@ -19,7 +19,9 @@ kubectl -n amazon-cloudwatch patch daemonset fluent-bit --type merge --patch-fil
 kubectl -n amazon-cloudwatch patch AmazonCloudWatchAgent cloudwatch-agent --type merge --patch-file eks-add-ons-patches/cloudwatch-agent.yaml
 ```
 
-Remember to change the `tolerations` patches according to your node groups.
+The patches will add the special toleration to the resources, allowing them to be scheduled on tainted nodes, as described [here](https://k8s-docs.netlify.app/en/docs/concepts/configuration/taint-and-toleration/#concepts):
+
+> An empty key with operator Exists matches all keys, values and effects which means this will tolerate everything.
 
 <!-- BEGIN_TF_DOCS -->
 ## Providers

@@ -2,7 +2,4 @@ spec:
   template:
     spec:
       tolerations:
-        - effect: NoSchedule
-          key: my-tainted-key
-          operator: Equal
-          value: my-tainted-value
+        - operator: Exists
