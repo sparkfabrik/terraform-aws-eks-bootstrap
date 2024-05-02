@@ -1,17 +1,3 @@
-locals {
-  additional_eks_addons = merge(
-    {},
-    var.cluster_enable_amazon_cloudwatch_observability_addon ? {
-      "amazon-cloudwatch-observability" = {
-        most_recent = true
-        configuration_values = jsonencode(
-          { "agent" : { "config" : { "logs" : { "metrics_collected" : { "kubernetes" : { "enhanced_container_insights" : var.enhanced_container_insights_enabled } } } } } }
-        )
-      }
-    } : {}
-  )
-}
-
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 19.13"
@@ -27,13 +13,7 @@ module "eks" {
   subnet_ids = var.private_subnet_ids
 
   cluster_addons = merge(
-    {
-      vpc-cni = {
-        most_recent = true
-        preserve    = true
-      }
-    },
-    local.additional_eks_addons,
+    local.eks_addons,
     var.cluster_additional_addons
   )
 
