@@ -359,7 +359,7 @@ variable "enable_fluentbit" {
   description = "Enable Fluentbit"
 }
 
-variable "fluentbit_additial_exclude_from_application_log_group" {
+variable "fluentbit_additional_exclude_from_application_log_group" {
   type        = list(string)
   default     = []
   description = "List of application logs to exclude log group"

@@ -12,29 +12,36 @@ module "fluentbit" {
   cluster_name             = module.eks.cluster_name
 
   additional_exclude_from_application_log_group = concat(
-    [
+    var.enable_cert_manager ? [
       "certificate-manager-cert-manager-cainjector",
       "certificate-manager-cert-manager-webhook",
       "certificate-manager-cert-manager",
+    ] : [],
+    var.enable_ingress_nginx ? [
       "ingress-nginx-controller",
       "ingress-nginx-defaultbackend",
+    ] : [],
+    var.enable_kube_prometheus_stack ?
+    [
       "kube-prometheus-stack-grafana",
       "kube-prometheus-stack-kube-state-metrics",
       "kube-prometheus-stack-operator",
       "kube-prometheus-stack-prometheus-node-exporter",
       "prometheus-kube-prometheus-stack-prometheus",
-    ],
-    var.fluentbit_additial_exclude_from_application_log_group
+    ] : [],
+    var.fluentbit_additional_exclude_from_application_log_group
   )
 
   additional_include_in_platform_log_group = concat(
-    [
+    var.enable_cert_manager ? [
       "certificate-manager-cert-manager-cainjector",
       "certificate-manager-cert-manager-webhook",
-      "certificate-manager-cert-manager",
+      "certificate-manager-cert-manager",      
+    ] : [],
+    var.enable_ingress_nginx ? [
       "ingress-nginx-controller",
       "ingress-nginx-defaultbackend",
-    ],
+    ] : [],
     var.fluentbit_additial_include_in_platform_log_group
   )
 
