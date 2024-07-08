@@ -365,7 +365,7 @@ variable "fluentbit_additional_exclude_from_application_log_group" {
   description = "List of application logs to exclude log group"
 }
 
-variable "fluentbit_additial_include_in_platform_log_group" {
+variable "fluentbit_additional_include_in_platform_log_group" {
   type        = list(string)
   default     = []
   description = "List of platform logs to include log group"

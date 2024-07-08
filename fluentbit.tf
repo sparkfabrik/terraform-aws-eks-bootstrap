@@ -42,7 +42,7 @@ module "fluentbit" {
       "ingress-nginx-controller",
       "ingress-nginx-defaultbackend",
     ] : [],
-    var.fluentbit_additial_include_in_platform_log_group
+    var.fluentbit_additional_include_in_platform_log_group
   )
 
   additional_filters = templatefile(
