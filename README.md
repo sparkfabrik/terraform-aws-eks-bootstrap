@@ -78,7 +78,7 @@ The patches will add the special toleration to the resources, allowing them to b
 | <a name="input_enable_calico"></a> [enable\_calico](#input\_enable\_calico) | Enable Calico | `bool` | `false` | no |
 | <a name="input_enable_cert_manager"></a> [enable\_cert\_manager](#input\_enable\_cert\_manager) | Enable Cert Manager | `bool` | `true` | no |
 | <a name="input_enable_cluster_autoscaler"></a> [enable\_cluster\_autoscaler](#input\_enable\_cluster\_autoscaler) | Enable Cluster Autoscaler | `bool` | `true` | no |
-| <a name="input_enable_default_eks_addons"></a> [enable\_default\_eks\_addons](#input\_enable\_default\_eks\_addons) | value to enable default eks addons | `bool` | `true` | no |
+| <a name="input_enable_default_eks_addons"></a> [enable\_default\_eks\_addons](#input\_enable\_default\_eks\_addons) | Value to enable default eks addons vpc-cni. | `bool` | `true` | no |
 | <a name="input_enable_firestarter_operations"></a> [enable\_firestarter\_operations](#input\_enable\_firestarter\_operations) | Enable Firestarter Operations | `bool` | `false` | no |
 | <a name="input_enable_fluentbit"></a> [enable\_fluentbit](#input\_enable\_fluentbit) | Enable Fluentbit | `bool` | `true` | no |
 | <a name="input_enable_gitlab_runner"></a> [enable\_gitlab\_runner](#input\_enable\_gitlab\_runner) | Enable Gitlab Runner | `bool` | `true` | no |

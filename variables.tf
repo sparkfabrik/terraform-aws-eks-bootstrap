@@ -56,7 +56,7 @@ variable "cluster_enabled_log_types" {
 variable "enable_default_eks_addons" {
   type        = bool
   default     = true
-  description = "value to enable default eks addons"
+  description = "Value to enable default eks addons vpc-cni."
 }
 
 variable "cluster_additional_addons" {
