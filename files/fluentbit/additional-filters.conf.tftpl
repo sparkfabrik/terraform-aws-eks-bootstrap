@@ -1,0 +1,4 @@
+[FILTER]
+      Name                grep
+      Match               application.*
+      Exclude             $log_processed['http_user_agent'] ${join("|", distinct(exclude_http_user_agents))}

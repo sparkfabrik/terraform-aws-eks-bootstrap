@@ -2,26 +2,30 @@
 # https://docs.aws.amazon.com/eks/latest/userguide/eks-add-ons.html
 # See "Amazon EBS CSI driver" or "Amazon CloudWatch Observability agent" sections for more details.
 locals {
-  eks_addons_sa_and_roles = {
-    "aws-node" = {
-      namespace = "kube-system",
-      role_name = "AmazonEKSVPCCNIRole",
-      # If you need to manage IPv6 addresses, you must create and use the policy for the IPv6 address range.
-      # You can find more information in: https://docs.aws.amazon.com/eks/latest/userguide/eks-add-ons.html
-      # in the "Amazon VPC CNI plugin for Kubernetes" section.
-      policies = [
-        "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy",
-      ],
-    },
-    "cloudwatch-agent" = {
-      namespace = "amazon-cloudwatch",
-      role_name = "AmazonEKS_Observability_Role",
-      policies = [
-        "arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess",
-        "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy",
-      ],
-    }
-  }
+  eks_addons_sa_and_roles = var.enable_default_eks_addons ? merge(
+    {
+      "aws-node" = {
+        namespace = "kube-system",
+        role_name = "AmazonEKSVPCCNIRole",
+        # If you need to manage IPv6 addresses, you must create and use the policy for the IPv6 address range.
+        # You can find more information in: https://docs.aws.amazon.com/eks/latest/userguide/eks-add-ons.html
+        # in the "Amazon VPC CNI plugin for Kubernetes" section.
+        policies = [
+          "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy",
+        ],
+      },
+    },  
+    var.cluster_enable_amazon_cloudwatch_observability_addon ? {
+      "cloudwatch-agent" = {
+        namespace = "amazon-cloudwatch",
+        role_name = "AmazonEKS_Observability_Role",
+        policies = [
+          "arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess",
+          "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy",
+        ],
+      }
+    } : {}
+  ) : {}
 }
 
 module "iam_assumable_role_with_oidc_for_eks_addons" {
@@ -47,7 +51,7 @@ module "iam_assumable_role_with_oidc_for_eks_addons" {
 # ATTENTION: to disable the NetworkPolicies feature, you need to delete ALL NetworkPolicy resources in the cluster before disabling the addon.
 # https://github.com/aws/aws-network-policy-agent/issues/135
 locals {
-  eks_addons = merge(
+  eks_addons = var.enable_default_eks_addons ? merge(
     {
       vpc-cni = {
         most_recent              = true,
@@ -64,5 +68,5 @@ locals {
         )
       }
     } : {}
-  )
+  ) : {}
 }

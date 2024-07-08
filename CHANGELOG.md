@@ -5,12 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [3.1.0] - 2024-07-08
 
 ### Added
 
 - refs platform/#2819: add documentation about patching the EKS cluster add-ons.
 - refs #000: refactor of the EKS cluster add-ons code.
+- Fix EKS addon
+- Add Fluntbit 
 
 ## [3.0.0] - 2023-12-21
 
