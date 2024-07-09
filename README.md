@@ -78,7 +78,9 @@ The patches will add the special toleration to the resources, allowing them to b
 | <a name="input_enable_calico"></a> [enable\_calico](#input\_enable\_calico) | Enable Calico | `bool` | `false` | no |
 | <a name="input_enable_cert_manager"></a> [enable\_cert\_manager](#input\_enable\_cert\_manager) | Enable Cert Manager | `bool` | `true` | no |
 | <a name="input_enable_cluster_autoscaler"></a> [enable\_cluster\_autoscaler](#input\_enable\_cluster\_autoscaler) | Enable Cluster Autoscaler | `bool` | `true` | no |
+| <a name="input_enable_default_eks_addons"></a> [enable\_default\_eks\_addons](#input\_enable\_default\_eks\_addons) | Value to enable default eks addons vpc-cni. | `bool` | `true` | no |
 | <a name="input_enable_firestarter_operations"></a> [enable\_firestarter\_operations](#input\_enable\_firestarter\_operations) | Enable Firestarter Operations | `bool` | `false` | no |
+| <a name="input_enable_fluentbit"></a> [enable\_fluentbit](#input\_enable\_fluentbit) | Enable Fluentbit | `bool` | `true` | no |
 | <a name="input_enable_gitlab_runner"></a> [enable\_gitlab\_runner](#input\_enable\_gitlab\_runner) | Enable Gitlab Runner | `bool` | `true` | no |
 | <a name="input_enable_ingress_nginx"></a> [enable\_ingress\_nginx](#input\_enable\_ingress\_nginx) | Enable Ingress Nginx | `bool` | `true` | no |
 | <a name="input_enable_kube_prometheus_stack"></a> [enable\_kube\_prometheus\_stack](#input\_enable\_kube\_prometheus\_stack) | Enable Kube Prometheus Stack | `bool` | `false` | no |
@@ -86,8 +88,10 @@ The patches will add the special toleration to the resources, allowing them to b
 | <a name="input_enable_velero"></a> [enable\_velero](#input\_enable\_velero) | Enable Velero | `bool` | `false` | no |
 | <a name="input_enable_velero_bucket_lifecycle"></a> [enable\_velero\_bucket\_lifecycle](#input\_enable\_velero\_bucket\_lifecycle) | Enable Velero Bucket Lifecycle | `bool` | `true` | no |
 | <a name="input_enhanced_container_insights_enabled"></a> [enhanced\_container\_insights\_enabled](#input\_enhanced\_container\_insights\_enabled) | Indicates whether to enable the enhanced CloudWatch Container Insights for Kubernetes. | `bool` | `true` | no |
+| <a name="input_fluentbit_additional_exclude_from_application_log_group"></a> [fluentbit\_additional\_exclude\_from\_application\_log\_group](#input\_fluentbit\_additional\_exclude\_from\_application\_log\_group) | List of application logs to exclude log group | `list(string)` | `[]` | no |
+| <a name="input_fluentbit_additional_include_in_platform_log_group"></a> [fluentbit\_additional\_include\_in\_platform\_log\_group](#input\_fluentbit\_additional\_include\_in\_platform\_log\_group) | List of platform logs to include log group | `list(string)` | `[]` | no |
 | <a name="input_gitlab_runner_additional_policy_arns"></a> [gitlab\_runner\_additional\_policy\_arns](#input\_gitlab\_runner\_additional\_policy\_arns) | Gitlab Runner Additional Policy ARNs | `list(string)` | `[]` | no |
-| <a name="input_gitlab_runner_registration_token"></a> [gitlab\_runner\_registration\_token](#input\_gitlab\_runner\_registration\_token) | Gitlab Runner Registration Token | `string` | n/a | yes |
+| <a name="input_gitlab_runner_registration_token"></a> [gitlab\_runner\_registration\_token](#input\_gitlab\_runner\_registration\_token) | Gitlab Runner Registration Token | `string` | `""` | no |
 | <a name="input_gitlab_runner_tags"></a> [gitlab\_runner\_tags](#input\_gitlab\_runner\_tags) | Gitlab Runner Helm Chart Configuration | `list(string)` | <pre>[<br>  "aws"<br>]</pre> | no |
 | <a name="input_ingress_nginx_helm_config"></a> [ingress\_nginx\_helm\_config](#input\_ingress\_nginx\_helm\_config) | Ingress Nginx Helm Chart Configuration | `any` | `{}` | no |
 | <a name="input_install_letsencrypt_issuers"></a> [install\_letsencrypt\_issuers](#input\_install\_letsencrypt\_issuers) | Install Let's Encrypt Issuers | `bool` | `true` | no |
@@ -162,6 +166,7 @@ The patches will add the special toleration to the resources, allowing them to b
 | <a name="module_cluster_autoscaler_irsa_role"></a> [cluster\_autoscaler\_irsa\_role](#module\_cluster\_autoscaler\_irsa\_role) | terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks | ~> 5.17 |
 | <a name="module_eks"></a> [eks](#module\_eks) | terraform-aws-modules/eks/aws | ~> 19.13 |
 | <a name="module_firestarter_operations"></a> [firestarter\_operations](#module\_firestarter\_operations) | ./modules/firestarter-operations | n/a |
+| <a name="module_fluentbit"></a> [fluentbit](#module\_fluentbit) | github.com/sparkfabrik/terraform-helm-fluentbit | 0.3.1 |
 | <a name="module_gitlab_runner"></a> [gitlab\_runner](#module\_gitlab\_runner) | github.com/sparkfabrik/terraform-aws-eks-gitlab-runner | 4e020f8 |
 | <a name="module_iam_assumable_role_with_oidc_for_eks_addons"></a> [iam\_assumable\_role\_with\_oidc\_for\_eks\_addons](#module\_iam\_assumable\_role\_with\_oidc\_for\_eks\_addons) | terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc | ~> 5.0 |
 | <a name="module_ingress_nginx"></a> [ingress\_nginx](#module\_ingress\_nginx) | github.com/sparkfabrik/terraform-helm-ingress-nginx | 0.4.0 |
