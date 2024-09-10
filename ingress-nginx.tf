@@ -7,7 +7,6 @@ locals {
     name              = "ingress-nginx"
     repository        = "https://kubernetes.github.io/ingress-nginx"
     helm_release_name = "ingress-nginx"
-    chart_version     = "4.8.3"
     namespace         = "ingress-nginx"
   }
 
@@ -26,8 +25,7 @@ locals {
 }
 
 module "ingress_nginx" {
-  source            = "github.com/sparkfabrik/terraform-helm-ingress-nginx?ref=0.4.0"
-  chart_version     = local.ingress_nginx_helm_config.chart_version
+  source            = "github.com/sparkfabrik/terraform-helm-ingress-nginx?ref=0.7.0"
   namespace         = local.ingress_nginx_helm_config.namespace
   helm_release_name = local.ingress_nginx_helm_config.helm_release_name
 
