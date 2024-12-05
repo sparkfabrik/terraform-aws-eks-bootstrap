@@ -1,11 +1,15 @@
+# https://github.com/vmware-tanzu/helm-charts/blob/main/charts/velero/values.yaml
 credentials:
   useSecret: false
 
 configuration:
-  provider: aws
   backupStorageLocation:
-    name: default
-    bucket: ${bucket}
+    - provider: aws
+      bucket: ${bucket}
+  volumeSnapshotLocation:
+    - provider: aws
+      config:
+        region: ${region}
 
 serviceAccount:
   server:
@@ -13,21 +17,24 @@ serviceAccount:
     annotations:
       eks.amazonaws.com/role-arn: ${role_arn}
 
+image:
+  imagePullSecrets:
+    - regcred
+
 initContainers:
-- name: velero-plugin-for-aws
-  image: velero/velero-plugin-for-aws:${aws_container_version}
-  imagePullPolicy: IfNotPresent
-  volumeMounts:
-    - mountPath: /target
-      name: plugins
+  - name: velero-plugin-for-aws
+    image: velero/velero-plugin-for-aws:${aws_container_version}
+    imagePullPolicy: IfNotPresent
+    volumeMounts:
+      - mountPath: /target
+        name: plugins
 
 schedules:
   fullbackup:
     disabled: false
-    schedule: "0 * * * *"
+    schedule: "0 4 * * *"
     useOwnerReferencesInBackup: true
     template:
-      defaultVolumesToRestic: false
       ttl: 720h
 
 snapshotsEnabled: false

@@ -6,14 +6,13 @@
 
 locals {
   default_velero_helm_config = {
-    name                  = "velero"
-    repository            = "https://vmware-tanzu.github.io/helm-charts"
-    helm_release_name     = "velero"
-    chart_version         = "2.27.3"
-    namespace             = "velero"
-    create_namespace      = true
-    aws_plugin_version    = "v1.2.1"
-    csi_plugin_version    = "v0.1.2"
+    name               = "velero"
+    repository         = "https://vmware-tanzu.github.io/helm-charts"
+    helm_release_name  = "velero"
+    chart_version      = var.velero_chart_version
+    namespace          = "velero"
+    create_namespace   = true
+    aws_plugin_version = "v1.9.1"
   }
 
   velero_helm_config = merge(

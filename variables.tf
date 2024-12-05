@@ -297,6 +297,12 @@ variable "enable_velero" {
   description = "Enable Velero"
 }
 
+variable "velero_chart_version" {
+  type        = string
+  default     = "6.0.0"
+  description = "Velero Helm Chart Version"
+}
+
 variable "velero_helm_config" {
   type        = any
   default     = {}
