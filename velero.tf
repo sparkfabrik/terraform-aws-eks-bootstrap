@@ -137,7 +137,7 @@ resource "helm_release" "velero" {
   namespace  = local.velero_helm_config.namespace
   version    = local.velero_helm_config.chart_version
 
-  values = trimspace(var.velero_helm_values) != "" ? [local.velero_default_values.template, var.velero_helm_values] : [local.velero_default_values.template]
+  values = trimspace(var.velero_helm_values) != "" ? [local.velero_default_values, var.velero_helm_values] : [local.velero_default_values]
 
   depends_on = [
     kubernetes_namespace.velero
