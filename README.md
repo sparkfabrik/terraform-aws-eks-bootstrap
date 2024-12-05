@@ -60,6 +60,7 @@ The patches will add the special toleration to the resources, allowing them to b
 | <a name="input_cluster_access_developer_groups"></a> [cluster\_access\_developer\_groups](#input\_cluster\_access\_developer\_groups) | The list of groups that will be mapped to the developer role in the application namespaces. | `list(string)` | n/a | yes |
 | <a name="input_cluster_access_map_users"></a> [cluster\_access\_map\_users](#input\_cluster\_access\_map\_users) | Cluster access | <pre>list(<br>    object({<br>      userarn  = string,<br>      username = string,<br>      groups   = list(string)<br>    })<br>  )</pre> | `[]` | no |
 | <a name="input_cluster_additional_addons"></a> [cluster\_additional\_addons](#input\_cluster\_additional\_addons) | Additional addons to install for EKS cluster. | `map(any)` | `{}` | no |
+| <a name="input_cluster_autoscaler_chart_version"></a> [cluster\_autoscaler\_chart\_version](#input\_cluster\_autoscaler\_chart\_version) | Cluster Autoscaler Helm Chart Version | `string` | `"9.35.0"` | no |
 | <a name="input_cluster_autoscaler_helm_config"></a> [cluster\_autoscaler\_helm\_config](#input\_cluster\_autoscaler\_helm\_config) | Cluster Autoscaler Helm Chart Configuration | `any` | `{}` | no |
 | <a name="input_cluster_enable_amazon_cloudwatch_observability_addon"></a> [cluster\_enable\_amazon\_cloudwatch\_observability\_addon](#input\_cluster\_enable\_amazon\_cloudwatch\_observability\_addon) | Indicates whether to enable the Amazon CloudWatch Container Insights for Kubernetes. | `bool` | `true` | no |
 | <a name="input_cluster_enabled_log_types"></a> [cluster\_enabled\_log\_types](#input\_cluster\_enabled\_log\_types) | A list of the desired control plane logging to enable. For more information, see Amazon EKS Cluster Logging in the Amazon EKS User Guide. | `list(string)` | `[]` | no |
@@ -98,6 +99,7 @@ The patches will add the special toleration to the resources, allowing them to b
 | <a name="input_kube_prometheus_grafana_hostname"></a> [kube\_prometheus\_grafana\_hostname](#input\_kube\_prometheus\_grafana\_hostname) | n/a | `string` | `""` | no |
 | <a name="input_kube_prometheus_storage_zone"></a> [kube\_prometheus\_storage\_zone](#input\_kube\_prometheus\_storage\_zone) | n/a | `list(string)` | `[]` | no |
 | <a name="input_letsencrypt_email"></a> [letsencrypt\_email](#input\_letsencrypt\_email) | Email address for expiration emails from Let's Encrypt. | `string` | `"example@example.com"` | no |
+| <a name="input_metric_server_chart_version"></a> [metric\_server\_chart\_version](#input\_metric\_server\_chart\_version) | Metric Server Helm Chart Version | `string` | `"3.12.0"` | no |
 | <a name="input_metric_server_helm_config"></a> [metric\_server\_helm\_config](#input\_metric\_server\_helm\_config) | Metric Server Helm Chart Configuration | `any` | `{}` | no |
 | <a name="input_private_subnet_ids"></a> [private\_subnet\_ids](#input\_private\_subnet\_ids) | n/a | `list(string)` | n/a | yes |
 | <a name="input_project"></a> [project](#input\_project) | Project name | `string` | n/a | yes |
@@ -105,8 +107,10 @@ The patches will add the special toleration to the resources, allowing them to b
 | <a name="input_velero_bucket_expiration_days"></a> [velero\_bucket\_expiration\_days](#input\_velero\_bucket\_expiration\_days) | n/a | `number` | `90` | no |
 | <a name="input_velero_bucket_glacier_days"></a> [velero\_bucket\_glacier\_days](#input\_velero\_bucket\_glacier\_days) | n/a | `number` | `60` | no |
 | <a name="input_velero_bucket_infrequently_access_days"></a> [velero\_bucket\_infrequently\_access\_days](#input\_velero\_bucket\_infrequently\_access\_days) | n/a | `number` | `30` | no |
+| <a name="input_velero_chart_version"></a> [velero\_chart\_version](#input\_velero\_chart\_version) | Velero Helm Chart Version | `string` | `"6.0.0"` | no |
 | <a name="input_velero_helm_config"></a> [velero\_helm\_config](#input\_velero\_helm\_config) | Velero Helm Chart Configuration | `any` | `{}` | no |
 | <a name="input_velero_helm_values"></a> [velero\_helm\_values](#input\_velero\_helm\_values) | Velero helm chart values | `string` | `""` | no |
+| <a name="input_velero_schedule_cron"></a> [velero\_schedule\_cron](#input\_velero\_schedule\_cron) | Velero Schedule Cron | `string` | `"0 4 * * *"` | no |
 | <a name="input_vpc_cidr_block"></a> [vpc\_cidr\_block](#input\_vpc\_cidr\_block) | n/a | `string` | n/a | yes |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | VPC | `string` | n/a | yes |
 ## Outputs
@@ -169,7 +173,7 @@ The patches will add the special toleration to the resources, allowing them to b
 | <a name="module_fluentbit"></a> [fluentbit](#module\_fluentbit) | github.com/sparkfabrik/terraform-helm-fluentbit | 0.3.1 |
 | <a name="module_gitlab_runner"></a> [gitlab\_runner](#module\_gitlab\_runner) | github.com/sparkfabrik/terraform-aws-eks-gitlab-runner | 4e020f8 |
 | <a name="module_iam_assumable_role_with_oidc_for_eks_addons"></a> [iam\_assumable\_role\_with\_oidc\_for\_eks\_addons](#module\_iam\_assumable\_role\_with\_oidc\_for\_eks\_addons) | terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc | ~> 5.0 |
-| <a name="module_ingress_nginx"></a> [ingress\_nginx](#module\_ingress\_nginx) | github.com/sparkfabrik/terraform-helm-ingress-nginx | 0.4.0 |
+| <a name="module_ingress_nginx"></a> [ingress\_nginx](#module\_ingress\_nginx) | github.com/sparkfabrik/terraform-helm-ingress-nginx | 0.7.0 |
 | <a name="module_kube_prometheus_stack"></a> [kube\_prometheus\_stack](#module\_kube\_prometheus\_stack) | github.com/sparkfabrik/terraform-sparkfabrik-prometheus-stack | 3.0.0 |
 | <a name="module_load_balancer_controller_irsa_role"></a> [load\_balancer\_controller\_irsa\_role](#module\_load\_balancer\_controller\_irsa\_role) | terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks | ~> 5.17 |
 | <a name="module_node_termination_handler_irsa_role"></a> [node\_termination\_handler\_irsa\_role](#module\_node\_termination\_handler\_irsa\_role) | terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks | ~> 5.17 |

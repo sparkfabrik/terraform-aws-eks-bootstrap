@@ -150,6 +150,12 @@ variable "enable_metric_server" {
   default     = true
 }
 
+variable "metric_server_chart_version" {
+  type        = string
+  description = "Metric Server Helm Chart Version"
+  default     = "3.12.0"
+}
+
 variable "metric_server_helm_config" {
   type        = any
   default     = {}
@@ -184,6 +190,12 @@ variable "enable_cluster_autoscaler" {
   type        = bool
   default     = true
   description = "Enable Cluster Autoscaler"
+}
+
+variable "cluster_autoscaler_chart_version" {
+  type        = string
+  default     = "9.35.0"
+  description = "Cluster Autoscaler Helm Chart Version"
 }
 
 variable "cluster_autoscaler_helm_config" {
@@ -295,6 +307,18 @@ variable "enable_velero" {
   type        = bool
   default     = false
   description = "Enable Velero"
+}
+
+variable "velero_chart_version" {
+  type        = string
+  default     = "6.0.0"
+  description = "Velero Helm Chart Version"
+}
+
+variable "velero_schedule_cron" {
+  type        = string
+  default     = "0 4 * * *"
+  description = "Velero Schedule Cron"
 }
 
 variable "velero_helm_config" {

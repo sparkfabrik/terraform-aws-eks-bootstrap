@@ -6,14 +6,14 @@
 
 locals {
   default_velero_helm_config = {
-    name                  = "velero"
-    repository            = "https://vmware-tanzu.github.io/helm-charts"
-    helm_release_name     = "velero"
-    chart_version         = "2.27.3"
-    namespace             = "velero"
-    create_namespace      = true
-    aws_plugin_version    = "v1.2.1"
-    csi_plugin_version    = "v0.1.2"
+    name               = "velero"
+    repository         = "https://vmware-tanzu.github.io/helm-charts"
+    helm_release_name  = "velero"
+    chart_version      = var.velero_chart_version
+    namespace          = "velero"
+    create_namespace   = true
+    aws_plugin_version = "v1.9.1"
+    schedule_cron      = var.velero_schedule_cron
   }
 
   velero_helm_config = merge(
@@ -23,6 +23,17 @@ locals {
 
   # Add a random suffix to prevent bucket name collisions.
   bucket_name = "${var.cluster_name}-velero-storage-${random_id.resources_suffix[0].hex}"
+
+  velero_default_values = templatefile(
+    "${path.module}/files/velero/values.yaml", {
+      role_arn              = module.velero_irsa_role[0].iam_role_arn
+      bucket                = local.bucket_name
+      serviceaccount_name   = local.velero_helm_config.name
+      aws_container_version = local.velero_helm_config.aws_plugin_version
+      region                = data.aws_region.current.name
+      schedule_cron         = local.velero_helm_config.schedule_cron
+    }
+  )
 }
 
 # The generated random_id is 4 characters long.
@@ -117,18 +128,6 @@ module "velero_irsa_role" {
   }
 }
 
-data "template_file" "velero_default_values" {
-  template = templatefile(
-    "${path.module}/files/velero/values.yaml", {
-      role_arn              = module.velero_irsa_role[0].iam_role_arn
-      bucket                = local.bucket_name
-      serviceaccount_name   = local.velero_helm_config.name
-      aws_container_version = local.velero_helm_config.aws_plugin_version
-      region                = data.aws_region.current.name
-    }
-  )
-}
-
 resource "helm_release" "velero" {
   count = var.enable_velero ? 1 : 0
 
@@ -138,7 +137,7 @@ resource "helm_release" "velero" {
   namespace  = local.velero_helm_config.namespace
   version    = local.velero_helm_config.chart_version
 
-  values = trimspace(var.velero_helm_values) != "" ? [data.template_file.velero_default_values.template, var.velero_helm_values] : [data.template_file.velero_default_values.template]
+  values = trimspace(var.velero_helm_values) != "" ? [local.velero_default_values, var.velero_helm_values] : [local.velero_default_values]
 
   depends_on = [
     kubernetes_namespace.velero
