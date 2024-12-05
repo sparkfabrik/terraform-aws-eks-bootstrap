@@ -17,10 +17,6 @@ serviceAccount:
     annotations:
       eks.amazonaws.com/role-arn: ${role_arn}
 
-image:
-  imagePullSecrets:
-    - regcred
-
 initContainers:
   - name: velero-plugin-for-aws
     image: velero/velero-plugin-for-aws:${aws_container_version}
