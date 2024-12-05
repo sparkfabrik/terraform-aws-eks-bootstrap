@@ -4,7 +4,7 @@ locals {
     name              = "metrics-server"
     repository        = "https://kubernetes-sigs.github.io/metrics-server"
     helm_release_name = "metrics-server"
-    chart_version     = "3.10.0"
+    chart_version     = var.metric_server_chart_version
     namespace         = "kube-system"
   }
 
@@ -30,6 +30,10 @@ resource "helm_release" "metric_server" {
   chart      = local.metric_server_helm_config.helm_release_name
   namespace  = local.metric_server_helm_config.namespace
   version    = local.metric_server_helm_config.chart_version
+
+  values = [
+    file("${path.module}/files/metric-server/values.yaml")
+  ]
 
   depends_on = [
     module.eks

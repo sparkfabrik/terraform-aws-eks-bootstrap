@@ -150,6 +150,12 @@ variable "enable_metric_server" {
   default     = true
 }
 
+variable "metric_server_chart_version" {
+  type        = string
+  description = "Metric Server Helm Chart Version"
+  default     = "3.12.0"
+}
+
 variable "metric_server_helm_config" {
   type        = any
   default     = {}
