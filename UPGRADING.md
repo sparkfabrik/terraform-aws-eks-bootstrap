@@ -5,7 +5,7 @@
 If you are upgrading from `3.x` to `4.0.0`, you will need to uninstall the `velero` helm release first:
 
 1. run `terraform state list | grep helm_release.velero`
-2. run `terraform state rm <your-module>`
+2. run `terraform destroy -target '<the resource fetched at step 1>'`
 3. update module and apply new resources
 
 ## From 2.X.Y to 3.0.0

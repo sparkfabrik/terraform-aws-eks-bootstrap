@@ -28,7 +28,7 @@ initContainers:
 schedules:
   fullbackup:
     disabled: false
-    schedule: "0 4 * * *"
+    schedule: ${schedule_cron}
     useOwnerReferencesInBackup: true
     template:
       ttl: 720h

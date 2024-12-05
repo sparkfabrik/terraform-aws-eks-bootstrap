@@ -315,6 +315,12 @@ variable "velero_chart_version" {
   description = "Velero Helm Chart Version"
 }
 
+variable "velero_schedule_cron" {
+  type        = string
+  default     = "0 4 * * *"
+  description = "Velero Schedule Cron"
+}
+
 variable "velero_helm_config" {
   type        = any
   default     = {}

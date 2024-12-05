@@ -13,6 +13,7 @@ locals {
     namespace          = "velero"
     create_namespace   = true
     aws_plugin_version = "v1.9.1"
+    schedule_cron      = var.velero_schedule_cron
   }
 
   velero_helm_config = merge(
@@ -124,6 +125,7 @@ data "template_file" "velero_default_values" {
       serviceaccount_name   = local.velero_helm_config.name
       aws_container_version = local.velero_helm_config.aws_plugin_version
       region                = data.aws_region.current.name
+      schedule_cron         = local.velero_helm_config.schedule_cron
     }
   )
 }

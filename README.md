@@ -110,6 +110,7 @@ The patches will add the special toleration to the resources, allowing them to b
 | <a name="input_velero_chart_version"></a> [velero\_chart\_version](#input\_velero\_chart\_version) | Velero Helm Chart Version | `string` | `"6.0.0"` | no |
 | <a name="input_velero_helm_config"></a> [velero\_helm\_config](#input\_velero\_helm\_config) | Velero Helm Chart Configuration | `any` | `{}` | no |
 | <a name="input_velero_helm_values"></a> [velero\_helm\_values](#input\_velero\_helm\_values) | Velero helm chart values | `string` | `""` | no |
+| <a name="input_velero_schedule_cron"></a> [velero\_schedule\_cron](#input\_velero\_schedule\_cron) | Velero Schedule Cron | `string` | `"0 4 * * *"` | no |
 | <a name="input_vpc_cidr_block"></a> [vpc\_cidr\_block](#input\_vpc\_cidr\_block) | n/a | `string` | n/a | yes |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | VPC | `string` | n/a | yes |
 ## Outputs

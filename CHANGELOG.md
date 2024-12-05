@@ -11,12 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- refs sparkfabrik-innovation-team/board#3267: Update modules for compatibility with aws-eks 1.25
+- refs platform/#3267: Update modules for compatibility with aws-eks 1.25
 
 ### ⚠️ Breaking changes ⚠️
 
 **ATTENTION:** read the [upgrading instructions](https://github.com/sparkfabrik/terraform-aws-eks-bootstrap/blob/4.0.0/UPGRADING.md#from-3x-to-400).
-
 
 ## [3.1.0] - 2024-07-09
 
