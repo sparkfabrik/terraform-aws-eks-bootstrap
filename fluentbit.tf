@@ -5,7 +5,7 @@ locals {
 module "fluentbit" {
   count = var.enable_fluentbit ? 1 : 0
 
-  source                   = "github.com/sparkfabrik/terraform-helm-fluentbit?ref=0.3.1"
+  source                   = "github.com/sparkfabrik/terraform-helm-fluentbit?ref=0.4.0"
   namespace                = local.fluentbit_namespace
   aws_region               = data.aws_region.current.name
   cluster_oidc_issuer_host = module.eks.oidc_provider
