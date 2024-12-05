@@ -1,4 +1,14 @@
-# Upgrading from 2.X.Y to 3.0.0
+# Upgrading Paht
+
+## From 3.x to 4.0.0
+
+If you are upgrading from `3.x` to `4.0.0`, you will need to uninstall the `velero` helm release first:
+
+1. run `terraform state list | grep helm_release.velero`
+2. run `terraform state rm <your-module>`
+3. update module and apply new resources
+
+## From 2.X.Y to 3.0.0
 
 Upgrading to `3.0.0` from `2.X.Y` will destroy and recreate the ingress nginx controller resource since now we're using the external module hosted on [GitHub](https://github.com/sparkfabrik/terraform-helm-ingress-nginx/).
 

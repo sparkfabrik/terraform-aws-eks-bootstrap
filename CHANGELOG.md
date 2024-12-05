@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.0.0] - 2024-12-5
+
+[Compare with previous version](https://github.com/sparkfabrik/terraform-aws-eks-bootstrap/compare/3.0.0...4.0.0)
+
+### Added
+
+- refs sparkfabrik-innovation-team/board#3267: Update modules for compatibility with aws-eks 1.25
+
+### ⚠️ Breaking changes ⚠️
+
+**ATTENTION:** read the [upgrading instructions](https://github.com/sparkfabrik/terraform-aws-eks-bootstrap/blob/4.0.0/UPGRADING.md#from-3x-to-400).
+
+
 ## [3.1.0] - 2024-07-09
 
 ### Added
