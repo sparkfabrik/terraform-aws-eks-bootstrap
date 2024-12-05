@@ -192,6 +192,12 @@ variable "enable_cluster_autoscaler" {
   description = "Enable Cluster Autoscaler"
 }
 
+variable "cluster_autoscaler_chart_version" {
+  type        = string
+  default     = "9.35.0"
+  description = "Cluster Autoscaler Helm Chart Version"
+}
+
 variable "cluster_autoscaler_helm_config" {
   type        = any
   default     = {}

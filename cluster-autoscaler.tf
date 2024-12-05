@@ -5,7 +5,7 @@ locals {
     name              = "cluster-autoscaler"
     repository        = "https://kubernetes.github.io/autoscaler"
     helm_release_name = "cluster-autoscaler"
-    chart_version     = "9.28.0"
+    chart_version     = var.cluster_autoscaler_chart_version
     namespace         = "kube-system"
   }
 
