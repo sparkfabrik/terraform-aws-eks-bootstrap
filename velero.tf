@@ -23,6 +23,17 @@ locals {
 
   # Add a random suffix to prevent bucket name collisions.
   bucket_name = "${var.cluster_name}-velero-storage-${random_id.resources_suffix[0].hex}"
+
+  velero_default_values = templatefile(
+    "${path.module}/files/velero/values.yaml", {
+      role_arn              = module.velero_irsa_role[0].iam_role_arn
+      bucket                = local.bucket_name
+      serviceaccount_name   = local.velero_helm_config.name
+      aws_container_version = local.velero_helm_config.aws_plugin_version
+      region                = data.aws_region.current.name
+      schedule_cron         = local.velero_helm_config.schedule_cron
+    }
+  )
 }
 
 # The generated random_id is 4 characters long.
@@ -117,19 +128,6 @@ module "velero_irsa_role" {
   }
 }
 
-data "template_file" "velero_default_values" {
-  template = templatefile(
-    "${path.module}/files/velero/values.yaml", {
-      role_arn              = module.velero_irsa_role[0].iam_role_arn
-      bucket                = local.bucket_name
-      serviceaccount_name   = local.velero_helm_config.name
-      aws_container_version = local.velero_helm_config.aws_plugin_version
-      region                = data.aws_region.current.name
-      schedule_cron         = local.velero_helm_config.schedule_cron
-    }
-  )
-}
-
 resource "helm_release" "velero" {
   count = var.enable_velero ? 1 : 0
 
@@ -139,7 +137,7 @@ resource "helm_release" "velero" {
   namespace  = local.velero_helm_config.namespace
   version    = local.velero_helm_config.chart_version
 
-  values = trimspace(var.velero_helm_values) != "" ? [data.template_file.velero_default_values.template, var.velero_helm_values] : [data.template_file.velero_default_values.template]
+  values = trimspace(var.velero_helm_values) != "" ? [local.velero_default_values.template, var.velero_helm_values] : [local.velero_default_values.template]
 
   depends_on = [
     kubernetes_namespace.velero
