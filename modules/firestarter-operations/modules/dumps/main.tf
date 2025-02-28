@@ -83,7 +83,7 @@ resource "aws_iam_policy" "dumps_admin" {
 
 module "iam_assumable_role_with_oidc_for_dumps_admin" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-  version = "~> 3.0"
+  version = "~> 5.0"
 
   create_role = true
   role_name   = local.full_iam_role_name
