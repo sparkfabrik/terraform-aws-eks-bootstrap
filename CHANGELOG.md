@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Update github.com/sparkfabrik/terraform-helm-fluentbit module to version 0.4.0
-- Add a new output `managed_node_groups` to expose a map of attribute for all EKS managed node groups created
+- Add a new output `managed_node_group_iam_roles` to expose a map of IAM roles for all managed node groups created
 
 ## [4.0.0] - 2024-12-5
 

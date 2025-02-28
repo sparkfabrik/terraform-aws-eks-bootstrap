@@ -33,7 +33,6 @@ The patches will add the special toleration to the resources, allowing them to b
 | <a name="provider_kubectl"></a> [kubectl](#provider\_kubectl) | >= 1.14 |
 | <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | >= 2.26 |
 | <a name="provider_random"></a> [random](#provider\_random) | >= 3.5 |
-| <a name="provider_template"></a> [template](#provider\_template) | >= 2.2 |
 ## Requirements
 
 | Name | Version |
@@ -126,6 +125,7 @@ The patches will add the special toleration to the resources, allowing them to b
 | <a name="output_grafana_admin_password"></a> [grafana\_admin\_password](#output\_grafana\_admin\_password) | # Grafana password |
 | <a name="output_ingress_nginx_dns_name"></a> [ingress\_nginx\_dns\_name](#output\_ingress\_nginx\_dns\_name) | n/a |
 | <a name="output_ingress_nginx_zone_id"></a> [ingress\_nginx\_zone\_id](#output\_ingress\_nginx\_zone\_id) | n/a |
+| <a name="output_managed_node_group_iam_roles"></a> [managed\_node\_group\_iam\_roles](#output\_managed\_node\_group\_iam\_roles) | IAM role names of the EKS managed node groups |
 ## Resources
 
 | Name | Type |
@@ -160,7 +160,6 @@ The patches will add the special toleration to the resources, allowing them to b
 | [aws_eks_cluster_auth.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/eks_cluster_auth) | data source |
 | [aws_lb.ingress_nginx](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/lb) | data source |
 | [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
-| [template_file.velero_default_values](https://registry.terraform.io/providers/hashicorp/template/latest/docs/data-sources/file) | data source |
 ## Modules
 
 | Name | Source | Version |
@@ -170,7 +169,7 @@ The patches will add the special toleration to the resources, allowing them to b
 | <a name="module_cluster_autoscaler_irsa_role"></a> [cluster\_autoscaler\_irsa\_role](#module\_cluster\_autoscaler\_irsa\_role) | terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks | ~> 5.17 |
 | <a name="module_eks"></a> [eks](#module\_eks) | terraform-aws-modules/eks/aws | ~> 19.13 |
 | <a name="module_firestarter_operations"></a> [firestarter\_operations](#module\_firestarter\_operations) | ./modules/firestarter-operations | n/a |
-| <a name="module_fluentbit"></a> [fluentbit](#module\_fluentbit) | github.com/sparkfabrik/terraform-helm-fluentbit | 0.3.1 |
+| <a name="module_fluentbit"></a> [fluentbit](#module\_fluentbit) | github.com/sparkfabrik/terraform-helm-fluentbit | 0.4.0 |
 | <a name="module_gitlab_runner"></a> [gitlab\_runner](#module\_gitlab\_runner) | github.com/sparkfabrik/terraform-aws-eks-gitlab-runner | 4e020f8 |
 | <a name="module_iam_assumable_role_with_oidc_for_eks_addons"></a> [iam\_assumable\_role\_with\_oidc\_for\_eks\_addons](#module\_iam\_assumable\_role\_with\_oidc\_for\_eks\_addons) | terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc | ~> 5.0 |
 | <a name="module_ingress_nginx"></a> [ingress\_nginx](#module\_ingress\_nginx) | github.com/sparkfabrik/terraform-helm-ingress-nginx | 0.7.0 |
