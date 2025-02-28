@@ -36,3 +36,10 @@ output "grafana_admin_password" {
   value     = var.enable_kube_prometheus_stack ? module.kube_prometheus_stack[0].grafana_admin_password : "N/D"
 }
 
+output "managed_node_group_iam_roles" {
+  value = {
+    for key, node_group in module.eks.eks_managed_node_groups :
+      key => node_group.iam_role_name
+  }
+  description = "IAM role names of the EKS managed node groups"
+}
