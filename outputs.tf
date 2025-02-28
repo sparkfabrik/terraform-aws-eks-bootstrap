@@ -36,3 +36,6 @@ output "grafana_admin_password" {
   value     = var.enable_kube_prometheus_stack ? module.kube_prometheus_stack[0].grafana_admin_password : "N/D"
 }
 
+output "managed_node_groups" {
+  value = module.eks.eks_managed_node_groups
+}

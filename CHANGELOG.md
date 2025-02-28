@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.1.0] - 2025-02-28
+
+[Compare with previous version](https://github.com/sparkfabrik/terraform-aws-eks-bootstrap/compare/4.0.0...4.1.0)
+
+### Added
+
+- Update github.com/sparkfabrik/terraform-helm-fluentbit module to version 0.4.0
+- Add a new output `managed_node_groups` to expose a map of attribute for all EKS managed node groups created
+
 ## [4.0.0] - 2024-12-5
 
 [Compare with previous version](https://github.com/sparkfabrik/terraform-aws-eks-bootstrap/compare/3.0.0...4.0.0)
@@ -24,7 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - refs platform/#2819: add documentation about patching the EKS cluster add-ons.
 - refs #000: refactor of the EKS cluster add-ons code.
 - Fix EKS addon
-- Add Fluntbit 
+- Add Fluntbit
 
 ## [3.0.0] - 2023-12-21
 
