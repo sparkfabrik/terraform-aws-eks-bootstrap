@@ -65,7 +65,7 @@ module "firestarter_operations" {
 
 # Application namespaces developer access
 module "cluster_access" {
-  source = "github.com/sparkfabrik/terraform-kubernetes-cluster-access?ref=0.1.0"
+  source = "github.com/sparkfabrik/terraform-kubernetes-cluster-access?ref=0.3.0"
 
   namespaces       = local.eks_application_namespaces
   developer_groups = var.cluster_access_developer_groups
