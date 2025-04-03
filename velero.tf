@@ -84,6 +84,7 @@ resource "aws_s3_bucket_public_access_block" "velero" {
 resource "aws_s3_bucket_lifecycle_configuration" "velero" {
   count  = var.enable_velero && var.enable_velero_bucket_lifecycle ? 1 : 0
   bucket = aws_s3_bucket.velero[0].id
+  transition_default_minimum_object_size = "varies_by_storage_class"
 
   rule {
     id     = "dumps"
@@ -101,6 +102,8 @@ resource "aws_s3_bucket_lifecycle_configuration" "velero" {
     expiration {
       days = var.velero_bucket_expiration_days
     }
+
+    filter {}
   }
 }
 
