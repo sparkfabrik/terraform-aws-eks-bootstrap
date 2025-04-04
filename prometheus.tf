@@ -56,7 +56,7 @@ resource "kubernetes_manifest" "ebs_storageclass" {
 module "kube_prometheus_stack" {
   count = var.enable_kube_prometheus_stack ? 1 : 0
 
-  source = "github.com/sparkfabrik/terraform-sparkfabrik-prometheus-stack?ref=3.0.0"
+  source = "github.com/sparkfabrik/terraform-sparkfabrik-prometheus-stack?ref=4.0.0"
 
   prometheus_stack_chart_version      = local.kube_prometheus_stack_chart_version
   namespace                           = local.kube_prometheus_namespace
