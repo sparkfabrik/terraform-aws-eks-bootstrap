@@ -1,6 +1,6 @@
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 19.13"
+  version = "~> 20.0"
 
   cluster_name    = var.cluster_name
   cluster_version = var.cluster_version
@@ -28,14 +28,21 @@ module "eks" {
   cluster_enabled_log_types              = var.cluster_enabled_log_types
   cloudwatch_log_group_retention_in_days = var.cloudwatch_log_group_retention_in_days
 
-  manage_aws_auth_configmap = true
-  # map developer & admin ARNs as kubernetes Users
-  aws_auth_users = concat(local.admin_user_map_users, local.developer_user_map_users, var.cluster_access_map_users)
-
+  authentication_mode = "CONFIG_MAP"
+  
   tags = {
     Cluster = var.cluster_name
     Project = var.project
   }
+}
+
+module "eks_aws_auth" {
+  source  = "terraform-aws-modules/eks/aws//modules/aws-auth"
+  version = "~> 20.0"
+
+  manage_aws_auth_configmap = true
+
+  aws_auth_users = concat(local.admin_user_map_users, local.developer_user_map_users, var.cluster_access_map_users)
 }
 
 module "gitlab_runner" {
