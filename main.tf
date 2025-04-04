@@ -28,6 +28,8 @@ module "eks" {
   cluster_enabled_log_types              = var.cluster_enabled_log_types
   cloudwatch_log_group_retention_in_days = var.cloudwatch_log_group_retention_in_days
 
+  authentication_mode = "CONFIG_MAP"
+  
   tags = {
     Cluster = var.cluster_name
     Project = var.project
