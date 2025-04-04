@@ -45,7 +45,7 @@ module "aws_ebs_csi_driver_identity" {
   count = var.enable_aws_ebs_csi_driver ? 1 : 0
 
   source       = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-  version      = "~> 4.2"
+  version      = "~> 5.0"
   create_role  = true
   role_name    = local.aws_ebs_csi_driver_iam_role_name
   provider_url = replace(module.eks.cluster_oidc_issuer_url, "https://", "")
