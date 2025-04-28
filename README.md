@@ -164,8 +164,8 @@ The patches will add the special toleration to the resources, allowing them to b
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_aws_ebs_csi_driver_identity"></a> [aws\_ebs\_csi\_driver\_identity](#module\_aws\_ebs\_csi\_driver\_identity) | terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc | ~> 4.2 |
-| <a name="module_cluster_access"></a> [cluster\_access](#module\_cluster\_access) | github.com/sparkfabrik/terraform-kubernetes-cluster-access | 0.1.0 |
+| <a name="module_aws_ebs_csi_driver_identity"></a> [aws\_ebs\_csi\_driver\_identity](#module\_aws\_ebs\_csi\_driver\_identity) | terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc | ~> 5.0 |
+| <a name="module_cluster_access"></a> [cluster\_access](#module\_cluster\_access) | github.com/sparkfabrik/terraform-kubernetes-cluster-access | 0.3.0 |
 | <a name="module_cluster_autoscaler_irsa_role"></a> [cluster\_autoscaler\_irsa\_role](#module\_cluster\_autoscaler\_irsa\_role) | terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks | ~> 5.17 |
 | <a name="module_eks"></a> [eks](#module\_eks) | terraform-aws-modules/eks/aws | ~> 19.13 |
 | <a name="module_firestarter_operations"></a> [firestarter\_operations](#module\_firestarter\_operations) | ./modules/firestarter-operations | n/a |
@@ -173,7 +173,7 @@ The patches will add the special toleration to the resources, allowing them to b
 | <a name="module_gitlab_runner"></a> [gitlab\_runner](#module\_gitlab\_runner) | github.com/sparkfabrik/terraform-aws-eks-gitlab-runner | 4e020f8 |
 | <a name="module_iam_assumable_role_with_oidc_for_eks_addons"></a> [iam\_assumable\_role\_with\_oidc\_for\_eks\_addons](#module\_iam\_assumable\_role\_with\_oidc\_for\_eks\_addons) | terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc | ~> 5.0 |
 | <a name="module_ingress_nginx"></a> [ingress\_nginx](#module\_ingress\_nginx) | github.com/sparkfabrik/terraform-helm-ingress-nginx | 0.8.0 |
-| <a name="module_kube_prometheus_stack"></a> [kube\_prometheus\_stack](#module\_kube\_prometheus\_stack) | github.com/sparkfabrik/terraform-sparkfabrik-prometheus-stack | 3.0.0 |
+| <a name="module_kube_prometheus_stack"></a> [kube\_prometheus\_stack](#module\_kube\_prometheus\_stack) | github.com/sparkfabrik/terraform-sparkfabrik-prometheus-stack | 4.0.0 |
 | <a name="module_load_balancer_controller_irsa_role"></a> [load\_balancer\_controller\_irsa\_role](#module\_load\_balancer\_controller\_irsa\_role) | terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks | ~> 5.17 |
 | <a name="module_node_termination_handler_irsa_role"></a> [node\_termination\_handler\_irsa\_role](#module\_node\_termination\_handler\_irsa\_role) | terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks | ~> 5.17 |
 | <a name="module_velero_irsa_role"></a> [velero\_irsa\_role](#module\_velero\_irsa\_role) | terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks | ~> 5.20 |
