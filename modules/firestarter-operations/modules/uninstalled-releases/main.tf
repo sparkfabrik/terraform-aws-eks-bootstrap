@@ -120,7 +120,7 @@ resource "kubernetes_service_account" "operator_account_sa" {
     # https://docs.aws.amazon.com/eks/latest/userguide/specify-service-account-role.html
     # eks.amazonaws.com/role-arn=arn:aws:iam::<ACCOUNT_ID>:role/<IAM_ROLE_NAME>
     annotations = {
-      "eks.amazonaws.com/role-arn" = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${module.iam_assumable_role_with_oidc_for_uninstalled_releases.this_iam_role_name}"
+      "eks.amazonaws.com/role-arn" = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${module.iam_assumable_role_with_oidc_for_uninstalled_releases.iam_role_name}"
     }
   }
 }
