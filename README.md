@@ -103,6 +103,7 @@ The patches will add the special toleration to the resources, allowing them to b
 | <a name="input_private_subnet_ids"></a> [private\_subnet\_ids](#input\_private\_subnet\_ids) | n/a | `list(string)` | n/a | yes |
 | <a name="input_project"></a> [project](#input\_project) | Project name | `string` | n/a | yes |
 | <a name="input_prometheus_stack_additional_values"></a> [prometheus\_stack\_additional\_values](#input\_prometheus\_stack\_additional\_values) | Additional values for Kube Prometheus Stack | `list(string)` | `[]` | no |
+| <a name="input_repository_expiration_days"></a> [repository\_expiration\_days](#input\_repository\_expiration\_days) | Value to set the expiration days for the application repositories, null means no expiration | `number` | `null` | no |
 | <a name="input_velero_bucket_expiration_days"></a> [velero\_bucket\_expiration\_days](#input\_velero\_bucket\_expiration\_days) | n/a | `number` | `90` | no |
 | <a name="input_velero_bucket_glacier_days"></a> [velero\_bucket\_glacier\_days](#input\_velero\_bucket\_glacier\_days) | n/a | `number` | `60` | no |
 | <a name="input_velero_bucket_infrequently_access_days"></a> [velero\_bucket\_infrequently\_access\_days](#input\_velero\_bucket\_infrequently\_access\_days) | n/a | `number` | `30` | no |
@@ -130,6 +131,7 @@ The patches will add the special toleration to the resources, allowing them to b
 
 | Name | Type |
 |------|------|
+| [aws_ecr_lifecycle_policy.project_image](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_lifecycle_policy) | resource |
 | [aws_ecr_repository.repository](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_repository) | resource |
 | [aws_iam_policy.aws_ebs_csi_driver](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_s3_bucket.velero](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) | resource |

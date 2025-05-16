@@ -302,6 +302,12 @@ variable "customer_application" {
   }))
 }
 
+variable "repository_expiration_days" {
+  type = number
+  description = "Value to set the expiration days for the application repositories, null means no expiration"
+  default = null
+}
+
 # Velero
 variable "enable_velero" {
   type        = bool
