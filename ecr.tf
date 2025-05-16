@@ -43,7 +43,7 @@ resource "aws_ecr_lifecycle_policy" "project_image" {
         }
       },
       {
-        "rulePriority" : 1,
+        "rulePriority" : 2,
         "description" : "Remove images older than 30 days",
         "selection" : {
           "tagStatus" : "any",
