@@ -304,7 +304,7 @@ variable "customer_application" {
 
 variable "repository_expiration_days" {
   type = number
-  description = "Value to set the expiration days for the application repositories, null means no expiration"
+  description = "Repository expiration days, used for lifecycle policy. Null to disable."
   default = null
 }
 
