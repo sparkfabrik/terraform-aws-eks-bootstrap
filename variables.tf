@@ -302,6 +302,12 @@ variable "customer_application" {
   }))
 }
 
+variable "repository_expiration_days" {
+  type = number
+  description = "Repository expiration days, used for lifecycle policy. Null to disable."
+  default = null
+}
+
 # Velero
 variable "enable_velero" {
   type        = bool
