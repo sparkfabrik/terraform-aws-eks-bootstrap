@@ -9,6 +9,39 @@ locals {
         repo_name = repo
       }
   ]]))
+
+  # Generate individual rules for each tag pattern.
+  # Please note that tagPatternList is an AND condition in AWS ECR lifecycle policy
+  tag_protection_rules = [
+    for index, pattern in var.ecr_protected_tag_patterns : {
+      rulePriority = index + 1
+      description  = "Keep images tagged with ${pattern}"
+      selection = {
+        tagStatus      = "tagged"
+        tagPatternList = [pattern]
+        countType      = "imageCountMoreThan"
+        countNumber    = 9999
+      }
+      action = {
+        type = "expire"
+      }
+    }
+  ]
+
+  # Rule to clean up old images
+  cleanup_rule = {
+    rulePriority = length(var.ecr_protected_tag_patterns) + 1
+    description  = "Remove images older than ${var.ecr_lifecycle_expiration_days} days"
+    selection = {
+      tagStatus   = "any"
+      countType   = "sinceImagePushed"
+      countUnit   = "days"
+      countNumber = var.ecr_lifecycle_expiration_days
+    }
+    action = {
+      type = "expire"
+    }
+  }
 }
 
 ## Create ECR repository
@@ -23,38 +56,14 @@ resource "aws_ecr_repository" "repository" {
 }
 
 resource "aws_ecr_lifecycle_policy" "project_image" {
-  for_each = var.repository_expiration_days != null ? { for entry in local.customer_application_repositories : "${entry.app_name}-${entry.repo_name}" => entry } : {}
+  for_each = var.ecr_enable_lifecycle_policy ? {
+    for repo_name, repo_config in aws_ecr_repository.repository : repo_name => repo_config
+    if !contains(var.ecr_lifecycle_policy_excluded_repositories, repo_name)
+  } : {}
 
-  repository = each.key
+  repository = each.value.name
 
   policy = jsonencode({
-    rules = [
-      {
-        "rulePriority" : 1,
-        "description" : "Keep image tagged with main, master, stage, dev*, review*",
-        "selection" : {
-          "tagStatus" : "tagged",
-          "tagPrefixList" : ["main", "master", "stage", "dev*", "review*"],
-          "countType" : "imageCountMoreThan",
-          "countNumber" : 9999
-        },
-        "action" : {
-          "type" : "expire"
-        }
-      },
-      {
-        "rulePriority" : 2,
-        "description" : "Remove images older than ${var.repository_expiration_days} days",
-        "selection" : {
-          "tagStatus" : "any",
-          "countType" : "sinceImagePushed",
-          "countUnit" : "days",
-          "countNumber" : var.repository_expiration_days
-        },
-        "action" : {
-          "type" : "expire"
-        }
-      }
-    ]
+    rules = concat(local.tag_protection_rules, [local.cleanup_rule])
   })
 }

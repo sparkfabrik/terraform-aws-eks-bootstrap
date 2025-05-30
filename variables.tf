@@ -302,11 +302,30 @@ variable "customer_application" {
   }))
 }
 
-variable "repository_expiration_days" {
-  type = number
-  description = "Repository expiration days, used for lifecycle policy. Null to disable."
-  default = null
+variable "ecr_protected_tag_patterns" {
+  type        = list(string)
+  description = "List of tag patterns to keep in ECR lifecycle policy."
+  default     = ["latest", "main", "master", "stage", "dev*", "review*", "0.*", "1.*", "2.*", "3.*", "4.*", "5.*", "6.*", "7.*", "8.*", "9.*", "v0.*", "v1.*", "v2.*", "v3.*", "v4.*", "v5.*", "v6.*", "v7.*", "v8.*", "v9.*"]
 }
+
+variable "ecr_enable_lifecycle_policy" {
+  type        = bool
+  description = "Enable lifecycle policy for ECR repositories."
+  default     = true
+}
+
+variable "ecr_lifecycle_expiration_days" {
+  type        = number
+  description = "Number of days after which untagged images expire. Only applies if enable_ecr_lifecycle_policy is true."
+  default     = 30
+}
+
+variable "ecr_lifecycle_policy_excluded_repositories" {
+  description = "A list of ECR repository names to exclude from the default lifecycle policy."
+  type        = list(string)
+  default     = []
+}
+
 
 # Velero
 variable "enable_velero" {
