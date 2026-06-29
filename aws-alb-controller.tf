@@ -33,7 +33,7 @@ module "load_balancer_controller_irsa_role" {
   count      = var.enable_aws_alb_controller ? 1 : 0
 
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "~> 5.17"
+  version = "~> 6.0"
 
   role_name                              = "load-balancer-controller"
   attach_load_balancer_controller_policy = true
