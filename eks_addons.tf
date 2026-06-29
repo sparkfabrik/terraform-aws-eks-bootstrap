@@ -32,7 +32,7 @@ module "iam_assumable_role_with_oidc_for_eks_addons" {
   for_each = local.eks_addons_sa_and_roles
 
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-  version = "~> 5.0"
+  version = "~> 6.0"
 
   create_role = true
   role_name   = each.value.role_name

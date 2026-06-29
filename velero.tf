@@ -112,7 +112,7 @@ module "velero_irsa_role" {
   count = var.enable_velero ? 1 : 0
 
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "~> 5.20"
+  version = "~> 6.0"
 
   role_name             = "${local.velero_helm_config.name}-irsa-role"
   attach_velero_policy  = true

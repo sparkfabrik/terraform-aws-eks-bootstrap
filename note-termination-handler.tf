@@ -32,7 +32,7 @@ module "node_termination_handler_irsa_role" {
   count = var.enable_aws_node_termination_handler ? 1 : 0
 
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "~> 5.17"
+  version = "~> 6.0"
 
   role_name                              = "node-termination-handler"
   attach_node_termination_handler_policy = true
